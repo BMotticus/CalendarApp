@@ -1,4 +1,4 @@
-@(title: String)(content: Html)
+@(title: String, styles: Seq[String] = Seq.empty, scripts: Seq[String] = Seq.empty)(content: Html)
 
 <!DOCTYPE html>
 
@@ -8,7 +8,7 @@
     <!-- Disables touch zooming by mobile divices 
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     -->
-    <title>@title</title>
+    <title>@title - BMotticus</title>
     <!-- assets folder target/web/public ;) -->
     <link rel="stylesheet" href='@routes.Assets.at("lib/bootstrap/css/bootstrap.css")'> <!-- Bootstrap -->
     <link rel="stylesheet" href='@routes.Assets.at("lib/normalize.css/normalize.css")'> <!-- normalize -->
@@ -46,133 +46,72 @@
         padding: 0 10px 5px;;
         
       }
-      
-      .flex-container {
-        /*width: 600px; use width for flex-flow*/
-        display: -webkit-flex;
-        display: -ms-flexbox;
-        display: flex;
-        margin: 1em 0;
-        border: 1px solid #333;
+      .active{
+        border: 2px solid #a1a1a1;
+        border-radius: 5px;
       }
-      
-      .flex1{
-        -webkit-flex: 1;
-        -ms-flex: 1;
-        flex: 1;
-      }
-      
-      .flex2{
-        -webkit-flex: 2;
-        -ms-flex: 2;
-        flex: 2;
-      }
-      
-      .flex3{
-        -webkit-flex: 1;
-        -ms-flex: 1;
-        flex: 1;
-      }
-      
-      #sidebar {
-        float: left;
-        display: inline;
-      }
-
       /* Set the fixed height of the footer here */
       #push,
       #footer {
         height: 60px;
       }
       #footer {
+        text-align: center;
         background-color: #f5f5f5;
       }
 
     </style>
     
-  </head>
-  <body>
-
-  <!-- Part 1: Wrap all page content here -->
-    <div id="wrap">
-    <!-- Begin page content -->
-      <div class="container">
-      
-    <header>
-      <div class="page-header">
-      <h1>My Website</h1>
-      </div>
-      <nav>
-        <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Store</a></li>
-          <li><a href="#">Blog</a></li>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Contact</a></li>
-        </ul>
-      </nav>
-      <article>
-        <section>    
-        <h2>Introduction</h2>
-          <p>This is where i explain the intro the Introduction. 
-          Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..</p>
-        </section>
-        <section>
-        <h2>Chapter 1</h2>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-           Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-           Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-           Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        </section>
-        <section>   
-        <h2>Chapter 2</h2>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-             Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-             Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-             Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        </section>    
-      </article>
-    </header>
-    
-      <article>
-        <section>
-        <!-- TODO Build Layout -->
-         @content
-        </section>
-      </article>
-      
-      <article>
-        <section class="flex-container">
-          <div class="box flex1">
-            <h3>ONE</h3>
-          </div>
-          <div class="box flex2">
-            <h3>TWO</h3>
-          </div>
-          <div class="box flex3">
-            <h3>THREE</h3>
-          </div>
-        </section>
-      </article>
-        
+</head>
+<body>
+  <div id="wrap">
+  <!-- Begin page content -->
+    <div class="container">
+      <div class="hbox">
+        <div class="flex1">
+          <h1>My Website</h1> 
+        </div>
+        <header class="flex6">
+          <nav class="nav-bar navbar-default">
+            <div class="collapse navbar-collapse">
+              <ul class="nav navbar-nav">
+                <li class="active"><a href='@routes.Application.index()'>Home</a></li>
+                <li><a href='@routes.Application.signUp()'>Sign Up</a></li>
+                <li><a href="#">Link</a></li>
+                <li><a href="#">Link</a></li>
+              </ul>
+              
+              <form class="navbar-form navbar-right" role="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">Submit</button>
+              </form>
+            </div>
+          </nav>
+        </header>
       </div>
       
+      <article>
+        @content
+      </article>
+      
+      <!--
+      <div id="sidebar">  
+        <aside>
+          <ul>
+            <li><a href="#">Sidebar 1</a></li>
+            <li><a href="#">Sidebar 2</a></li>
+            <li><a href="#">Sidebar 3</a></li>
+            <li><a href="#">Sidebar 4</a></li>
+            <li><a href="#">Sidebar 5</a></li>
+          </ul>
+        </aside>
+      </div>
+      -->
+      </div>
       <div id="push"></div>
     </div>
-    <!--
-    <div id="sidebar">  
-      <aside>
-        <ul>
-          <li><a href="#">Sidebar 1</a></li>
-          <li><a href="#">Sidebar 2</a></li>
-          <li><a href="#">Sidebar 3</a></li>
-          <li><a href="#">Sidebar 4</a></li>
-          <li><a href="#">Sidebar 5</a></li>
-        </ul>
-      </aside>
-    </div>
-    -->
-
     <div id="footer">
       <div class="container">
         <footer>

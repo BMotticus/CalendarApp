@@ -1,0 +1,16 @@
+@import play.api.mvc._
+
+@(request: RequestHeader)
+
+<h2>File Not Found</h2>
+<ul>
+  <li>Path: @request.path</li>
+  <li>Request Method: @request.method</li>
+  <li>Content Type: @request.contentType.getOrElse("")</li>
+  <li>Domain: @request.domain</li>
+  <li>Host @request.host</li>
+  <li>Cookie Info: @request.cookies.mkString("-&-")</li>
+  <li>Query String @request.rawQueryString</li>
+  <li>Session: @request.session.toString</li>
+  <li>Raw Data: @request.toString()</li>
+</ul>

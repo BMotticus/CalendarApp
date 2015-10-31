@@ -1,0 +1,42 @@
+@(ex: Throwable)
+
+@main("500 Internal Server Error"){
+  <h2>Internal Server Error</h2>
+  <h3>Exception Thrown</h3>
+  <dl>
+    <dt>Message</dt>
+    <dd>@ex.getMessage</dd>
+    
+    <dt>Localized Message</dt>
+    <dd>@ex.getLocalizedMessage</dd>
+    
+    <dt>Cause</dt>
+    <dd>@ex.getCause.toString</dd>
+    
+    <dt>Localized Message</dt>
+    <dd>
+      <table>
+        <thead>
+          <tr>
+            <th>File Name</th>
+            <th>Ln #</th>
+            <th>Class Name</th>
+            <th>Method Name</th>
+            <th></th>
+          </tr>
+        </thead>
+      <tbody>
+        @ex.getStackTrace.map { st =>
+        <tr>
+         <td>@st.getFileName</td>
+          <td>@st.getLineNumber</td> 
+          <td>@st.getClassName</td>
+          <td>@st.getMethodName</td>
+          <td>@st.toString</td>
+        </tr>
+        }
+      </tbody>
+      </table>
+    </dd>
+  </dl>
+}
