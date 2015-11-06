@@ -4,33 +4,28 @@ import models._
 import play.api.data.validation.Constraints._
 import com.typesafe.scalalogging.StrictLogging
 import scala.language.postfixOps
-import play.api.Play.current
 import play.api._
 import play.api.mvc._
-import play.api.db.DB
-import play.api.libs.json
-import play.api.libs.concurrent.Akka
 import org.joda.time.{LocalDate, DateTime, DateTimeZone}
 import play.api.data.Form
 import play.api.data.Forms._
-import play.api.libs.concurrent.Execution.Implicits._
-import play.api.data._
-import play.api.data.validation._
-import scala.concurrent.Future
-import play.twirl.api.Html
-import org.apache.commons.codec.binary.Hex
+import app.mysql._
+import com.gravitydev.scoop._, query._
+import play.api.Play.current
+import play.api.db.DB
+import java.sql.Connection
 
 object Application extends Controller with StrictLogging {
 
   val userForm = Form(
-    tuple(
+    mapping(
       "firstName" -> text,
       "lastName" -> text,
       "username" -> nonEmptyText(minLength = 6),
       "email" -> email,
       "password" -> text(minLength = 8),
       "password2" -> nonEmptyText
-    ).verifying("Passwords must match", fields => fields match { case (_, _, _, _, pass1, pass2) => pass1 == pass2 })
+    )(UserData.apply)(UserData.unapply).verifying("Passwords must match", fields => fields.password == fields.password2 )
   )
   
   case class UserData(
@@ -49,6 +44,29 @@ object Application extends Controller with StrictLogging {
   }
   
   def signUp = Action {
-    Ok(views.html.signUp(userForm.fill("","","","","","")))
+    Ok(views.html.signUp(userForm.fill(UserData("","","","","",""))))
+  }
+  
+  def doSignUp = Action {implicit r =>
+    userForm.bindFromRequest().fold(
+      hasErrors => {
+        BadRequest(views.html.signUp(hasErrors))
+      }, 
+      success => {
+        //TODO: Save to DB
+        val userId = DB.withConnection(implicit conn =>
+          using(tables.users){u => 
+            .insertInto(u)
+            .values(
+              u.firstName := success.firstName
+              u.lastName  := success.lastName
+              u.userName  := success.userName
+              u.email     := success.email
+            )
+          }().get
+        )
+        Redirect(routes.Application.index)
+      }
+    )
   }
 }

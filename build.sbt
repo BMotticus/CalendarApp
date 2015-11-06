@@ -43,7 +43,7 @@ CoffeeScriptKeys.sourceMap := true
 
 CoffeeScriptKeys.bare := false
 
-scoopPackage := "mysql"
+scoopPackage := "app.mysql"
 scoopJdbcUrl := "jdbc:mysql://localhost/play23?characterEncoding=UTF-8"
 scoopJdbcUsername := "root"
 scoopJdbcPassword := ""

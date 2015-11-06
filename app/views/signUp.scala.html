@@ -6,7 +6,17 @@
 @main("Sign Up"){
 
   <section>
-    <h1></h1>
+    <h1>Sign Up</h1>
+    
+    @helper.form(routes.Application.doSignUp){
+      @helper.inputText(f("firstName"))
+      @helper.inputText(f("lastName"))
+      @helper.inputText(f("userName"))
+      @helper.inputText(f("email"))
+      @helper.inputPassword(f("password"))
+      @helper.inputPassword(f("password2"))
+      <button>Submit</button>
+    }
   </section>
 
 }

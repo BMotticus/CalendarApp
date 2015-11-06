@@ -5,6 +5,14 @@ import mysql._
 import play.api.Play.current
 import play.api.db.DB
 
-class User {
+case class User (
+  firstname: String,
+  lastname: String,
+  username: String,
+  email: String
+)
 
-}
+
+
+
+
