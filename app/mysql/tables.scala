@@ -9,5 +9,8 @@ object `package` {
     d => new DateTime(d.getTime), 
     d => new java.sql.Timestamp(d.getMillis)
   )
-  
+  implicit object localDate extends SqlCustomType [LocalDate, java.sql.Date] (
+    d => LocalDate.fromDateFields(d), 
+    d => new java.sql.Date(d.toDate.getTime)
+  )
 }

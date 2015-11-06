@@ -2,7 +2,8 @@ logLevel := Level.Warn
 
 resolvers ++= Seq(
   "Typesafe repository" at "https://repo.typesafe.com/typesafe/releases/",
-  "grvt" at "https://devstack.io/repo/gravitydev/public"
+  "grvt" at "https://devstack.io/repo/gravitydev/public",
+  "devstack" at "https://devstack.io/repo/gravitydev/public"
 )
 
 // The Play plugin

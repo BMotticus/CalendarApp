@@ -60,7 +60,8 @@ scoopMapType := {(tpe: Int) =>
 
 resolvers ++= Seq(
   "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases",
-  Resolver.url("Edulify Repository", url("https://edulify.github.io/modules/releases/"))(Resolver.ivyStylePatterns)
+  Resolver.url("Edulify Repository", url("https://edulify.github.io/modules/releases/"))(Resolver.ivyStylePatterns),
+  "gravity" at "https://devstack.io/repo/gravitydev/public"
 )
 
 
