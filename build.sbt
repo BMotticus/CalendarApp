@@ -48,7 +48,7 @@ EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Managed
 
 EclipseKeys.withSource := true
 
-TwirlKeys.templateImports += "play.api.Play.current,bmotticus.BMPlugin"
+TwirlKeys.templateImports += "play.api.Play.current" //bmotticus.BMPlugin
 
 scoopPackage := "mysql"
 scoopJdbcUrl := "jdbc:mysql://localhost/play23?characterEncoding=UTF-8"

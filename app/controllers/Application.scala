@@ -15,13 +15,13 @@ import java.sql.Connection
 
 object Application extends Controller with StrictLogging {
 
-  val bm = current.plugin[bmotticus.BMPlugin].get
+  //val bm = current.plugin[bmotticus.BMPlugin].get
   
   val userForm = Form(
     tuple(
       "username" -> text,
       "email" -> text,
-      "password" -> text,
+      "password1" -> text,
       "password2" -> text
     )//(UserData.apply)(UserData.unapply).verifying("Passwords must match", fields => fields.password == fields.password2 )
   )
@@ -32,7 +32,6 @@ object Application extends Controller with StrictLogging {
     password: String,
     password2: String
   )  
-  
   
 
   def index = Action { implicit r =>
@@ -45,16 +44,15 @@ object Application extends Controller with StrictLogging {
     }
   }
   
-  def doSignUp = Action (parse.urlFormEncoded) {implicit r =>
+  def doSignUp = Action {implicit r =>
     userForm.bindFromRequest.fold(
       f => {
-        logger.debug("submission failed: " + f)
+        println("submission failed: " + f)
         BadRequest(views.html.signUp(f.withGlobalError("Sign up failed.")))
       }, 
       { case (username,email,pass1,pass2) =>
-        logger.debug("submission successful")
+        println("submission successful")
         //TODO: Save to DB
-        
         Redirect(routes.Application.userInfo(createUser(UserData.apply(username,email,pass1,pass2))))
       }
     )
@@ -73,13 +71,14 @@ object Application extends Controller with StrictLogging {
   import play.api.db.DB
   
   def createUser(user: UserData): Long = {
-    logger.debug("Inside create user")
+    println("Inside create user")
     DB.withConnection{ implicit conn =>
       using(tables.users){u => 
       insertInto(u)
         .values(
           u.user_name  := user.userName,
           u.email     := user.email,
+          u.password  := user.password,
           u.created_date := DateTime.now
         )().get
       }

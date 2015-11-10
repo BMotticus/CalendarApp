@@ -19,15 +19,14 @@
     
     @helper.form(routes.Application.doSignUp()){
       @helper.inputText(
-        f("userName"), 
+        f("username"), 
         '_label -> "Username", 
         '_help -> "Choose a username you want to use",
         '_showConstraints -> false
       )
       @helper.inputText(
         f("email"), 
-        '_label -> "Email", 
-        'placeholder -> "Email Address", 
+        '_label -> "Email Address", 
         'class -> "control", 
         'type -> "email", 
         '_showConstraints -> false
@@ -35,7 +34,7 @@
       @helper.inputPassword(
         f("password1"), 
         '_label -> "Password", 
-        '_help -> "Must be at least 8 characters",
+        '_help -> "Must be at least 5 characters",
         'class -> "control",
         '_showConstraints -> false
       )
@@ -47,7 +46,7 @@
       )
       
       <div>
-        <button class='control control-special' type='submit'>Add Device</button>
+        <button class='control control-special' type='submit'>Sign Up</button>
         <a href='@routes.Application.index()'><button type='button' class='control'>Cancel</button></a>
       </div>
     }
