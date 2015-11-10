@@ -1,22 +1,32 @@
 @import helper._ 
-@import helper.twitterBootstrap._ 
+@import play.api.data.Form
+@import play.api.data.format.Formats._
 
-@(f: Form[_])
+@(f: Form[_])(implicit r: RequestHeader)
 
-@main("Sign Up"){
+@main("Registration"){
 
   <section>
-    <h1>Sign Up</h1>
+    <h1>Sign up here!</h1>
+    @if(f.hasGlobalErrors) {
+        <ul class="list-group-item-danger">
+            @for(error <- f.globalErrors) {
+            <li>@error.message</li>
+            }
+        </ul>
+        }
     
-    @helper.form(routes.Application.doSignUp){
-      @helper.inputText(f("firstName"))
-      @helper.inputText(f("lastName"))
-      @helper.inputText(f("userName"))
-      @helper.inputText(f("email"))
-      @helper.inputPassword(f("password"))
-      @helper.inputPassword(f("password2"))
-      <button>Submit</button>
+    @helper.form(routes.Application.doSignUp()){
+      @inputText(f("userName"), '_showConstraints -> false, '_label -> "Username", '_help -> "Choose a username you want to use")
+      @inputText(f("email"), '_showConstraints -> false, '_label -> "Email")
+      @inputPassword(f("password1"), '_showConstraints -> false, '_label -> "Password", '_help -> "Must be at least 8 characters")
+      @inputPassword(f("password2"), '_showConstraints -> false, '_label -> "Confirm Password")
+      <input type="submit" value="Submit" class="btn btn-default"/>
+      <a href="@routes.Application.index()" class="btn btn-danger">Cancel</a>
     }
+    
+    
+    
   </section>
 
 }

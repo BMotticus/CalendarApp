@@ -1,4 +1,4 @@
-@(ex: Throwable)
+@(ex: Throwable, r: RequestHeader)
 
 @main("500 Internal Server Error"){
   <h2>Internal Server Error</h2>
@@ -19,7 +19,7 @@
         <thead>
           <tr>
             <th>File Name</th>
-            <th>Ln #</th>
+            <th>Line #</th>
             <th>Class Name</th>
             <th>Method Name</th>
             <th></th>

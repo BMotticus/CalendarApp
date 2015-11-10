@@ -43,7 +43,9 @@ CoffeeScriptKeys.sourceMap := true
 
 CoffeeScriptKeys.bare := false
 
-scoopPackage := "app.mysql"
+TwirlKeys.templateImports += "play.api.Play.current"
+
+scoopPackage := "mysql"
 scoopJdbcUrl := "jdbc:mysql://localhost/play23?characterEncoding=UTF-8"
 scoopJdbcUsername := "root"
 scoopJdbcPassword := ""

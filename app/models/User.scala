@@ -6,8 +6,7 @@ import play.api.Play.current
 import play.api.db.DB
 
 case class User (
-  firstname: String,
-  lastname: String,
+  id: Long,
   username: String,
   email: String
 )

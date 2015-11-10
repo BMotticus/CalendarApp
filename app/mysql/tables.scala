@@ -1,4 +1,4 @@
-package app.mysql
+package mysql
 
 import com.gravitydev.scoop._, query._
 import org.joda.time._
