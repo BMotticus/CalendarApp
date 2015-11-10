@@ -12,20 +12,6 @@ import play.api.libs.concurrent.Execution.Implicits._
 package object controllers{
 
   /**
-   * AJAX object for asynchronously storing play form/fields 
-   */
-  object Ajax {
-    
-    def fieldErrors (errors: (String,String)*) = BadRequest(
-      Json.obj("fieldErrors" -> Json.obj(
-        errors.map {case (k,v) => k -> (v: Json.JsValueWrapper)} : _*
-      ))
-    )
-    def created (url: String) = Created(Json.obj("url" -> url)).withHeaders("Location" -> url)
-    def success (res: JsValue = Json.obj("success" -> true)) = Ok(res)
-  }
-
-  /**
     * outputs a given string and the current thread name
     * @param msg
     */

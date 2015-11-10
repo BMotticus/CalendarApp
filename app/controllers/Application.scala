@@ -1,24 +1,22 @@
 package controllers
 
-import models._
-import play.api.data.validation.Constraints._
 import com.typesafe.scalalogging.StrictLogging
 import scala.language.postfixOps
 import play.api._
 import play.api.mvc._
-import org.joda.time.{LocalDate, DateTime, DateTimeZone}
+import org.joda.time._
+import play.api.data.validation.Constraints._
 import play.api.data.Form
 import play.api.data.format.Formats._ 
 import play.api.data.Forms._
-import mysql._
-import com.gravitydev.scoop._, query._
-import play.api.Play.current
 import play.api.libs.concurrent.Execution.Implicits._
-import play.api.db.DB
+import play.api.Play.current
 import java.sql.Connection
 
 object Application extends Controller with StrictLogging {
 
+  val bm = current.plugin[bmotticus.BMPlugin].get
+  
   val userForm = Form(
     tuple(
       "username" -> text,
@@ -56,15 +54,27 @@ object Application extends Controller with StrictLogging {
       { case (username,email,pass1,pass2) =>
         logger.debug("submission successful")
         //TODO: Save to DB
-        UserData.apply(username,email,pass1,pass2)
-        Redirect(routes.Application.index)
+        
+        Redirect(routes.Application.userInfo(createUser(UserData.apply(username,email,pass1,pass2))))
       }
     )
   }
   
-  def createUser(user: UserData) = {
+  def userInfo(userId: Long) = Action { implicit r =>
+    val user = findUserById(userId)
+    Ok{
+      views.html.userInfo(user)
+    }
+  }
+  
+  import mysql._
+  import com.gravitydev.scoop._, query._
+  import play.api.Play.current
+  import play.api.db.DB
+  
+  def createUser(user: UserData): Long = {
     logger.debug("Inside create user")
-    val userId = DB.withConnection{ implicit conn =>
+    DB.withConnection{ implicit conn =>
       using(tables.users){u => 
       insertInto(u)
         .values(
@@ -76,4 +86,14 @@ object Application extends Controller with StrictLogging {
     }
   }
   
+  def findUserById(userId: Long): models.User = {
+    DB.withTransaction{implicit conn =>
+      using (tables.users) {u => 
+        from(u)
+          .where(u.id === userId)
+          .find(models.Parsers.user(u))
+          .headOption getOrElse sys.error("No User found for id: " + userId)
+      }
+    }
+  }
 }

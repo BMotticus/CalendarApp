@@ -8,24 +8,49 @@
 
   <section>
     <h1>Sign up here!</h1>
-    @if(f.hasGlobalErrors) {
-        <ul class="list-group-item-danger">
-            @for(error <- f.globalErrors) {
-            <li>@error.message</li>
-            }
-        </ul>
-        }
     
-    @helper.form(routes.Application.doSignUp()){
-      @inputText(f("userName"), '_showConstraints -> false, '_label -> "Username", '_help -> "Choose a username you want to use")
-      @inputText(f("email"), '_showConstraints -> false, '_label -> "Email")
-      @inputPassword(f("password1"), '_showConstraints -> false, '_label -> "Password", '_help -> "Must be at least 8 characters")
-      @inputPassword(f("password2"), '_showConstraints -> false, '_label -> "Confirm Password")
-      <input type="submit" value="Submit" class="btn btn-default"/>
-      <a href="@routes.Application.index()" class="btn btn-danger">Cancel</a>
+    @if(f.hasGlobalErrors) {
+      <ul style="list-style-type: none;" class="list-group-item-danger">
+          @for(e <- f.globalErrors) {
+          <li>@e.message</li>
+          }
+      </ul>
     }
     
-    
+    @helper.form(routes.Application.doSignUp()){
+      @helper.inputText(
+        f("userName"), 
+        '_label -> "Username", 
+        '_help -> "Choose a username you want to use",
+        '_showConstraints -> false
+      )
+      @helper.inputText(
+        f("email"), 
+        '_label -> "Email", 
+        'placeholder -> "Email Address", 
+        'class -> "control", 
+        'type -> "email", 
+        '_showConstraints -> false
+      )
+      @helper.inputPassword(
+        f("password1"), 
+        '_label -> "Password", 
+        '_help -> "Must be at least 8 characters",
+        'class -> "control",
+        '_showConstraints -> false
+      )
+      @helper.inputPassword(
+        f("password2"), 
+        '_label -> "Confirm Password",
+        'class -> "control",
+        '_showConstraints -> false 
+      )
+      
+      <div>
+        <button class='control control-special' type='submit'>Add Device</button>
+        <a href='@routes.Application.index()'><button type='button' class='control'>Cancel</button></a>
+      </div>
+    }
     
   </section>
 
