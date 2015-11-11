@@ -19,17 +19,19 @@ object Application extends Controller with StrictLogging {
   
   val userForm = Form(
     tuple(
-      "username" -> text,
-      "email" -> text,
-      "password1" -> text,
+      "username" -> nonEmptyText,
+      "email" -> email,
+      "password1" -> nonEmptyText,
       "password2" -> text
-    )//(UserData.apply)(UserData.unapply).verifying("Passwords must match", fields => fields.password == fields.password2 )
+    ).verifying("Passwords Don't Match!",f => f match {
+      case (u,e,p1,p2) => p1 == p2
+      })
   )
   
   case class UserData(
-    userName: String,
+    username: String,
     email: String,
-    password: String,
+    password1: String,
     password2: String
   )  
   
@@ -71,14 +73,14 @@ object Application extends Controller with StrictLogging {
   import play.api.db.DB
   
   def createUser(user: UserData): Long = {
-    println("Inside create user")
+    println("Creating user")
     DB.withConnection{ implicit conn =>
       using(tables.users){u => 
       insertInto(u)
         .values(
-          u.user_name  := user.userName,
+          u.user_name  := user.username,
           u.email     := user.email,
-          u.password  := user.password,
+          u.password  := user.password1,
           u.created_date := DateTime.now
         )().get
       }

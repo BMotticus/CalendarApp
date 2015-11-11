@@ -3,7 +3,8 @@ logLevel := Level.Warn
 resolvers ++= Seq(
   "Typesafe repository" at "https://repo.typesafe.com/typesafe/releases/",
   "grvt" at "https://devstack.io/repo/gravitydev/public",
-  "devstack" at "https://devstack.io/repo/gravitydev/public"
+  "devstack" at "https://devstack.io/repo/gravitydev/public",
+  "Sonatype snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/"
 )
 
 // The Play plugin
@@ -25,6 +26,8 @@ addSbtPlugin("com.typesafe.sbt" % "sbt-mocha" % "1.0.2")
 addSbtPlugin("com.github.ddispaltro" % "sbt-reactjs" % "0.5.2")
 
 addSbtPlugin("com.gravitydev" % "scoop-sbt-plugin" % "0.0.3-SNAPSHOT")
+
+addSbtPlugin("com.github.mpeltonen" % "sbt-idea" % "1.7.0-SNAPSHOT")
 
 libraryDependencies ++= Seq(
   "mysql" % "mysql-connector-java" % "5.1.34",
