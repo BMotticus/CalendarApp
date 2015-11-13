@@ -1,0 +1,12 @@
+@(confirm: Long, message: String, title: String, tab: String)(implicit r: RequestHeader)
+
+@main(title=title,tab=tab){
+
+  <section>
+    <h2>Thank You</h2>
+    <p>@message</p>
+    <p> Confirmation # @confirm </p>
+    
+  </section>
+
+}

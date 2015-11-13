@@ -35,6 +35,21 @@ object Application extends Controller with StrictLogging {
     password2: String
   )  
   
+  case class ContactData(
+    sender: String,
+    about: String,
+    message: String,
+    respond: String
+  )
+  val contactForm = Form(
+    mapping(
+      "sender" -> nonEmptyText,
+      "about" -> text,
+      "message" -> nonEmptyText,
+      "respond" -> text
+    )(ContactData.apply)(ContactData.unapply)
+  )
+  
 
   def index = Action { implicit r =>
     Ok(views.html.index("Your new application is ready."))
@@ -67,6 +82,31 @@ object Application extends Controller with StrictLogging {
     }
   }
   
+  def contact = Action{ implicit r => 
+    Ok{
+      views.html.contact(contactForm.fill(ContactData("","","","")))
+    }
+  }
+  
+  def doContact = Action{ implicit r =>
+    contactForm.bindFromRequest().fold(
+      f => BadRequest(views.html.contact(f)), 
+      s => {
+        val confirm = createMessage(s)
+        Redirect(routes.Application.thankYou(confirm = confirm,
+        message = "Thank you for contacting us, we will respond as soon as possible. Have a great day",
+        title = "Message Sent", tab = "contact"))
+      }
+    )
+  }
+  
+  def thankYou(confirm: Long, message: String, title: String, tab: String) = Action {implicit r =>
+    Ok{
+      views.html.thankYou(confirm = confirm, message = message, title = title, tab = tab)
+    }
+  }
+  
+  
   import mysql._
   import com.gravitydev.scoop._, query._
   import play.api.Play.current
@@ -97,4 +137,19 @@ object Application extends Controller with StrictLogging {
       }
     }
   }
+  
+  def createMessage(data: ContactData): Long = {
+    DB.withConnection{ implicit conn =>
+      using(tables.messages) {m =>
+        insertInto(m)
+          .values(
+            m.sender_info := data.sender,
+            m.about := Option(data.about).filter(_.nonEmpty),
+            m.message := data.message,
+            m.respond_info := Option(data.respond).filter(_.nonEmpty),
+            m.sent_date := DateTime.now 
+          )().get
+      }
+    }
+  } 
 }

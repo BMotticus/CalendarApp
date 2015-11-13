@@ -1,0 +1,19 @@
+@import helper._ 
+@import play.api.data.Form
+@import play.api.data.format.Formats._
+
+@(f: Form[_])(implicit r: RequestHeader)
+
+@main(title="Contact Us", tab="contact") {
+  <section>
+    <h2>Contact Me</h2>
+    
+    @helper.form(routes.Application.doContact()) {
+      @inputText( f( "sender" ) )
+      @inputText( f( "about" ) )
+      @textarea( f( "message" ) )
+      @inputText( f( "respond" ) )
+      @fragments.submitAndCancel(routes.Application.index())
+    }
+  </section>
+}
