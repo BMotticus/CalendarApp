@@ -9,7 +9,9 @@ GET             /userInfo/:userId                                               
 GET             /contact                                                                   controllers.Application.contact
 POST            /contact                                                                   controllers.Application.doContact     
 GET             /thankyou                                                                  controllers.Application.thankYou(confirm: Long, message: String, title: String, tab: String)                   
+GET             /tutorials                                                                 controllers.Application.tutorials
+GET             /documents                                                                 controllers.Application.documents
+GET             /blog                                                                      controllers.Application.blog
 
 # Map static resources from the /public folder to the /assets URL path
 GET             /assets/*file                                                              controllers.Assets.at(path="/public", file)
-

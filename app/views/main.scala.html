@@ -1,3 +1,4 @@
+
 @(title: String, tab: String = "", styles: Seq[String] = Seq.empty, scripts: Seq[String] = Seq.empty)(content: Html)
 
 <!DOCTYPE html>
@@ -15,7 +16,9 @@
     <link rel="stylesheet" href='@routes.Assets.at("lib/animate.css/animate.css")'> <!-- Animate -->
     <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")"><!-- Compiled LESS -->
     <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
-    <script src="@routes.Assets.at("javascripts/hello.js")"></script><!-- JavaScript -->
+    <script type='text/javascript' src='@routes.Assets.at("lib/react/JSXTransformer.js")'></script><!-- React.js -->
+    <script type='text/javascript' src='@routes.Assets.at("lib/react/react.js")'></script><!-- React.js -->
+    <script src="@routes.Assets.at("javascripts/app.js")"></script><!-- React.js -->
     <script src="@routes.Assets.at("javascripts/home.js")"></script><!-- CoffeeScript -->
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -74,11 +77,11 @@
             <div class="collapse navbar-collapse">
             @{
               val links = List(
-                "home" -> routes.Application.index( ).url -> "Home",
-                "document" -> routes.Application.index( ).url -> "Documentation",
-                "tutorial" -> routes.Application.index( ).url -> "Tutorials",
-                "contact" -> routes.Application.index( ).url -> "Contact Us",
-                "blog" -> routes.Application.index( ).url -> "Blog",
+                "home" -> routes.Application.index().url -> "Home",
+                "documents" -> routes.Application.documents().url -> "Documentation",
+                "tutorials" -> routes.Application.tutorials().url -> "Tutorials",
+                "contact" -> routes.Application.contact().url -> "Contact Us",
+                "blog" -> routes.Application.blog().url -> "Blog",
                 "register" -> routes.Application.signUp( ).url -> "Registration"
               )
               
@@ -101,7 +104,7 @@
         </header>
       </div>
       
-      <article>
+      <article style="margin: 0 auto;">
         @content
       </article>
       

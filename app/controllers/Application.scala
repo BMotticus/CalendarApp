@@ -105,8 +105,23 @@ object Application extends Controller with StrictLogging {
       views.html.thankYou(confirm = confirm, message = message, title = title, tab = tab)
     }
   }
-  
-  
+
+  def tutorials = Action { implicit r =>
+    Ok(views.html.tutorials())
+  }
+
+  def documents = Action { implicit r =>
+    Ok(views.html.documents())
+  }
+
+  def blog = Action { implicit r =>
+    Ok(views.html.blog())
+  }
+    
+    
+  /**
+   * Database 
+   */
   import mysql._
   import com.gravitydev.scoop._, query._
   import play.api.Play.current
