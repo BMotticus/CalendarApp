@@ -10,8 +10,7 @@ import play.api.data.Form
 import play.api.data.format.Formats._ 
 import play.api.data.Forms._
 import play.api.libs.concurrent.Execution.Implicits._
-import play.api.Play.current
-import java.sql.Connection
+
 
 object Application extends Controller with StrictLogging {
 
@@ -111,6 +110,7 @@ object Application extends Controller with StrictLogging {
   import com.gravitydev.scoop._, query._
   import play.api.Play.current
   import play.api.db.DB
+  import java.sql.Connection
   
   def createUser(user: UserData): Long = {
     println("Creating user")
