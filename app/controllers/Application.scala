@@ -14,19 +14,6 @@ import play.api.libs.concurrent.Execution.Implicits._
 
 object Application extends Controller with StrictLogging {
 
-  //val bm = current.plugin[bmotticus.BMPlugin].get
-  
-  val userForm = Form(
-    tuple(
-      "username" -> nonEmptyText,
-      "email" -> email,
-      "password1" -> nonEmptyText,
-      "password2" -> text
-    ).verifying("Passwords Don't Match!",f => f match {
-      case (u,e,p1,p2) => p1 == p2
-      })
-  )
-  
   case class UserData(
     username: String,
     email: String,
@@ -40,6 +27,7 @@ object Application extends Controller with StrictLogging {
     message: String,
     respond: String
   )
+  
   val contactForm = Form(
     mapping(
       "sender" -> nonEmptyText,
@@ -49,6 +37,23 @@ object Application extends Controller with StrictLogging {
     )(ContactData.apply)(ContactData.unapply)
   )
   
+  val userForm = Form(
+    tuple(
+      "username" -> nonEmptyText,
+      "email" -> email,
+      "password1" -> nonEmptyText,
+      "password2" -> text
+    ).verifying("Passwords Don't Match!",f => f match {
+      case (u,e,p1,p2) => p1 == p2
+      })
+  )  
+  
+  val signInForm = Form(
+    tuple(
+      "username" -> nonEmptyText,
+      "password" -> nonEmptyText
+    )
+  )
 
   def index = Action { implicit r =>
     Ok(views.html.index("Your new application is ready."))
@@ -60,7 +65,7 @@ object Application extends Controller with StrictLogging {
     }
   }
   
-  def doSignUp = Action {implicit r =>
+  def doSignUp = Action { implicit r =>
     userForm.bindFromRequest.fold(
       f => {
         println("submission failed: " + f)
@@ -81,13 +86,13 @@ object Application extends Controller with StrictLogging {
     }
   }
   
-  def contact = Action{ implicit r => 
+  def contact = Action { implicit r => 
     Ok{
       views.html.contact(contactForm.fill(ContactData("","","","")))
     }
   }
   
-  def doContact = Action{ implicit r =>
+  def doContact = Action { implicit r =>
     contactForm.bindFromRequest().fold(
       f => BadRequest(views.html.contact(f)), 
       s => {
@@ -105,6 +110,21 @@ object Application extends Controller with StrictLogging {
     }
   }
   
+  def signIn () = Action { implicit r =>
+    Ok{
+      views.html.signIn(signInForm)
+    }
+  }
+  
+  def doSignIn () = Action { implicit r => 
+    signInForm.bindFromRequest.fold( 
+      f => BadRequest(views.html.signIn(f)), 
+      s => {
+        //TODO: Authenticate User
+        Redirect(routes.Application.index())
+      }
+    )
+  }
   
   import mysql._
   import com.gravitydev.scoop._, query._
