@@ -12,7 +12,7 @@ import play.api.data.Forms._
 import play.api.libs.concurrent.Execution.Implicits._
 
 
-object Application extends Controller with StrictLogging {
+object Application extends Controller with BaseController with StrictLogging {
 
   case class UserData(
     username: String,
@@ -27,6 +27,8 @@ object Application extends Controller with StrictLogging {
     message: String,
     respond: String
   )
+  
+  case class SignInData(username: String, password:String)
   
   val contactForm = Form(
     mapping(
@@ -49,10 +51,10 @@ object Application extends Controller with StrictLogging {
   )  
   
   val signInForm = Form(
-    tuple(
+    mapping(
       "username" -> nonEmptyText,
       "password" -> nonEmptyText
-    )
+    )(SignInData.apply)(SignInData.unapply)
   )
 
   def index = Action { implicit r =>
@@ -110,16 +112,18 @@ object Application extends Controller with StrictLogging {
     }
   }
   
-  def signIn () = Action { implicit r =>
+  def signIn (path: String) = Action { implicit r =>
     Ok{
-      views.html.signIn(signInForm)
+      views.html.signIn(path, signInForm.fill(SignInData("","")))
     }
   }
   
   def doSignIn () = Action { implicit r => 
+    val path = r.body.asFormUrlEncoded.get("path").headOption
     signInForm.bindFromRequest.fold( 
-      f => BadRequest(views.html.signIn(f)), 
+      f => BadRequest(views.html.signIn(path.getOrElse(""), f)), 
       s => {
+        val user = userByCredentials(s.username, s.password).get
         //TODO: Authenticate User
         Redirect(routes.Application.index())
       }
@@ -171,5 +175,17 @@ object Application extends Controller with StrictLogging {
           )().get
       }
     }
-  } 
+  }
+  
+  def userByCredentials(username: String, password:String): Option[models.User] = {
+    DB.withTransaction{ implicit conn => 
+      using (tables.users) {u => 
+        from(u)
+          .where(u.user_name === username && u.password === password)
+          .find(models.Parsers.user(u))
+          .headOption
+      }
+    }
+  }
+   
 }

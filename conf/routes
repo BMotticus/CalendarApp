@@ -2,16 +2,16 @@
 # ~~~~
 
 # Home page
-GET             /                                                                          controllers.Application.index
-GET             /signUp                                                                    controllers.Application.signUp
-POST            /signUp                                                                    controllers.Application.doSignUp
-GET             /userInfo/:userId                                                          controllers.Application.userInfo(userId: Long)
-GET             /contact                                                                   controllers.Application.contact
-POST            /contact                                                                   controllers.Application.doContact     
-GET             /thankYou                                                                  controllers.Application.thankYou(confirm: Long, message: String, title: String, tab: String)                   
-GET             /signIn                                                                    controllers.Application.signIn
-POST            /signIn                                                                    controllers.Application.doSignIn     
+GET             /                                                            controllers.Application.index
+GET             /signUp                                                      controllers.Application.signUp
+POST            /signUp                                                      controllers.Application.doSignUp
+GET             /userInfo/:userId                                            controllers.Application.userInfo(userId: Long)
+GET             /contact                                                     controllers.Application.contact
+POST            /contact                                                     controllers.Application.doContact     
+GET             /thankYou                                                    controllers.Application.thankYou(confirm: Long, message: String, title: String, tab: String)                   
+GET             /signIn                                                      controllers.Application.signIn(path: String ?= "")
+POST            /signIn                                                      controllers.Application.doSignIn     
 
 # Map static resources from the /public folder to the /assets URL path
-GET             /assets/*file                                                              controllers.Assets.at(path="/public", file)
+GET             /assets/*file                                                controllers.Assets.at(path="/public", file)
 

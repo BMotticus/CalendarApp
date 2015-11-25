@@ -2,7 +2,7 @@
 @import play.api.data.Form
 @import play.api.data.format.Formats._
 
-@(f: Form[_])(implicit r: RequestHeader)
+@(path: String, f: Form[_])(implicit r: RequestHeader)
 
 @main(title="Sign In", tab="signIn"){
 
@@ -18,11 +18,13 @@
     }
     
     @helper.form(routes.Application.doSignUp()){
+      <input type="hidden" name="path" value="@path" />
       @helper.inputText(
         f("username"), 
         '_label -> "Username", 
         'class -> "control",
-        '_showConstraints -> false
+        '_showConstraints -> false,
+        '_error -> f.globalError
       )
       @helper.inputPassword(
           f("password"), 
