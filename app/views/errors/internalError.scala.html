@@ -1,6 +1,5 @@
-@(ex: Throwable, r: RequestHeader)
+@(ex: Throwable, r: Request[_])
 
-@main("500 Internal Server Error"){
   <h2>Internal Server Error</h2>
   <h3>Exception Thrown</h3>
   <dl>
@@ -39,4 +38,3 @@
       </table>
     </dd>
   </dl>
-}

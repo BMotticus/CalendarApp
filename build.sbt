@@ -25,10 +25,13 @@ libraryDependencies ++= Seq(
   "org.scala-lang"              % "scala-reflect" % "2.11.6",
   "org.slf4j"                   % "slf4j-api" % "1.7.5",
   "mysql"                       % "mysql-connector-java" % "5.1.36",
+  "commons-codec"               % "commons-codec" % "1.9",
+  "commons-io"                  % "commons-io" % "2.4",
   "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0",
   "com.edulify"                %% "play-hikaricp" % "2.0.6",
-  "com.gravitydev"             %%  "scoop"   % "1.1.0-SNAPSHOT",
+  "com.gravitydev"             %% "scoop"   % "1.1.0-SNAPSHOT",
   "org.scalaz"                 %% "scalaz-core" % "7.1.3",
+  "com.typesafe.akka"          %% "akka-actor" % "2.3.2",
   "com.squants"                %% "squants"  % "0.5.3",
   "org.scalatest"              %% "scalatest" % "2.2.4" % "test",
   "org.scalamock"              %% "scalamock-scalatest-support" % "3.2" % "test",
@@ -48,7 +51,7 @@ EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Managed
 
 EclipseKeys.withSource := true
 
-TwirlKeys.templateImports += "play.api.Play.current" //bmotticus.BMPlugin
+TwirlKeys.templateImports += "play.api.Play.current,controllers.AuthRequest" //bmotticus.BMPlugin
 
 ReactJsKeys.harmony := true
 

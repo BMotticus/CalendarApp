@@ -1,0 +1,40 @@
+@import helper._ 
+@import play.api.data.Form
+@import play.api.data.format.Formats._
+
+@(path: String, f: Form[_])(implicit r: Request[_])
+
+@main(title="Sign In", tab="signIn"){
+
+  <section>
+    <h1>Sign In</h1>
+    
+    @if(f.hasGlobalErrors) {
+      <ul style="list-style-type: none;" class="list-group-item-danger">
+          @for(e <- f.globalErrors) {
+          <li>@e.message</li>
+          }
+      </ul>
+    }
+    
+    @helper.form(routes.Application.doSignIn()){
+      <input type="hidden" name="path" value="@path" />
+      @helper.inputText(
+        f("username"), 
+        '_label -> "Username", 
+        'class -> "control",
+        '_showConstraints -> false,
+        '_error -> f.globalError
+      )
+      @helper.inputPassword(
+          f("password"), 
+          '_label -> "Password",
+          'class -> "control",
+          '_showConstraints -> false 
+        )
+        @fragments.submitAndCancel(routes.Application.index())
+      }
+      
+    </section>
+  
+  }

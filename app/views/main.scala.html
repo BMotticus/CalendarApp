@@ -1,5 +1,11 @@
-
-@(title: String, tab: String = "", styles: Seq[String] = Seq.empty, scripts: Seq[String] = Seq.empty)(content: Html)
+@import _root_.session._
+@import models._
+@(
+  title: String, 
+  tab: String = "", 
+  styles: Seq[String] = Seq.empty, 
+  scripts: Seq[String] = Seq.empty
+)(content: Html)(implicit r: Request[_])
 
 <!DOCTYPE html>
 
@@ -70,7 +76,16 @@
     <div class="container">
       <div class="hbox">
         <div class="flex1">
-          <h1>My Website</h1> 
+          <div class="vbox">
+              <ul class="nav navbar-nav">
+                <li>@{
+                userSession(SessionUser.parse(r.session.data).getOrElse(new AnonymousUser))
+                }</li>
+              </ul>
+              <div class="flex1">
+                <h1>My Website</h1> 
+              </div>
+          </div>
         </div>
         <header class="flex6">
           <nav class="nav-bar navbar-default">
@@ -102,6 +117,7 @@
             </div>
           </nav>
         </header>
+       
       </div>
       
       <article style="margin: 0 auto;">

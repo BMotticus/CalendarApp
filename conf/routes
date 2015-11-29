@@ -2,16 +2,19 @@
 # ~~~~
 
 # Home page
-GET             /                                                                          controllers.Application.index
-GET             /signUp                                                                    controllers.Application.signUp
-POST            /signUp                                                                    controllers.Application.doSignUp
-GET             /userInfo/:userId                                                          controllers.Application.userInfo(userId: Long)
-GET             /contact                                                                   controllers.Application.contact
-POST            /contact                                                                   controllers.Application.doContact     
-GET             /thankyou                                                                  controllers.Application.thankYou(confirm: Long, message: String, title: String, tab: String)                   
-GET             /tutorials                                                                 controllers.Application.tutorials
-GET             /documents                                                                 controllers.Application.documents
-GET             /blog                                                                      controllers.Application.blog
-
+GET             /                                                            controllers.Application.index
+GET             /signUp                                                      controllers.Application.signUp
+POST            /signUp                                                      controllers.Application.doSignUp
+GET             /userInfo/:userId                                            controllers.Application.userInfo(userId: Long)
+GET             /contact                                                     controllers.Application.contact
+POST            /contact                                                     controllers.Application.doContact     
+GET             /thankYou                                                    controllers.Application.thankYou(confirm: Long, message: String, title: String, tab: String)                   
+GET             /tutorials                                                   controllers.Application.tutorials
+GET             /documents                                                   controllers.Application.documents
+GET             /blog                                                        controllers.Application.blog
+GET             /signIn                                                      controllers.Application.signIn(path: String ?= "")
+POST            /signIn                                                      controllers.Application.doSignIn     
+GET             /signOut                                                     controllers.Application.signOut
 # Map static resources from the /public folder to the /assets URL path
-GET             /assets/*file                                                              controllers.Assets.at(path="/public", file)
+GET             /assets/*file                                                controllers.Assets.at(path="/public", file)
+

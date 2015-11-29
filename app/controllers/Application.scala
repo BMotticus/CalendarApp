@@ -10,22 +10,9 @@ import play.api.data.Form
 import play.api.data.format.Formats._ 
 import play.api.data.Forms._
 import play.api.libs.concurrent.Execution.Implicits._
-import play.api.Play.current
-import java.sql.Connection
 
-object Application extends Controller with StrictLogging {
+object Application extends Controller with BaseController with StrictLogging {
 
-  val userForm = Form(
-    tuple(
-      "username" -> nonEmptyText,
-      "email" -> email,
-      "password1" -> nonEmptyText,
-      "password2" -> text
-    ).verifying("Passwords Don't Match!",f => f match {
-      case (u,e,p1,p2) => p1 == p2
-      })
-  )
-  
   case class UserData(
     username: String,
     email: String,
@@ -39,6 +26,9 @@ object Application extends Controller with StrictLogging {
     message: String,
     respond: String
   )
+  
+  case class SignInData(username: String, password:String)
+  
   val contactForm = Form(
     mapping(
       "sender" -> nonEmptyText,
@@ -48,6 +38,25 @@ object Application extends Controller with StrictLogging {
     )(ContactData.apply)(ContactData.unapply)
   )
   
+  val userForm = Form(
+    tuple(
+      "username" -> nonEmptyText,
+      "email" -> email,
+      "password1" -> nonEmptyText,
+      "password2" -> text
+    ).verifying("Passwords Don't Match!",f => f match {
+      case (u,e,p1,p2) => p1 == p2
+      })
+  )  
+  
+  val signInForm = Form(
+    mapping(
+      "username" -> nonEmptyText,
+      "password" -> nonEmptyText
+    )(SignInData.apply)(SignInData.unapply).verifying("Username or Password was incorrect.", e => {
+      checkSignInCredentails(e.username,e.password).isDefined
+    })
+  )
 
   def index = Action { implicit r =>
     Ok(views.html.index("Your new application is ready."))
@@ -59,7 +68,7 @@ object Application extends Controller with StrictLogging {
     }
   }
   
-  def doSignUp = Action {implicit r =>
+  def doSignUp = Action { implicit r =>
     userForm.bindFromRequest.fold(
       f => {
         println("submission failed: " + f)
@@ -80,13 +89,13 @@ object Application extends Controller with StrictLogging {
     }
   }
   
-  def contact = Action{ implicit r => 
+  def contact = Action { implicit r => 
     Ok{
       views.html.contact(contactForm.fill(ContactData("","","","")))
     }
   }
   
-  def doContact = Action{ implicit r =>
+  def doContact = Action { implicit r =>
     contactForm.bindFromRequest().fold(
       f => BadRequest(views.html.contact(f)), 
       s => {
@@ -116,7 +125,31 @@ object Application extends Controller with StrictLogging {
     Ok(views.html.blog())
   }
     
-    
+  def signIn (path: String) = Action { implicit r =>
+    Ok{
+      views.html.signIn(path, signInForm.fill(SignInData("","")))
+    }
+  }
+  
+  def doSignIn () = Action { implicit r => 
+    val path = r.body.asFormUrlEncoded.get("path").headOption
+    signInForm.bindFromRequest.fold( 
+      f => BadRequest(views.html.signIn(path.getOrElse(""), f)), 
+      s => {
+        val userSession = signInWithCredentials(s.username, s.password).get
+        //TODO: Implement path redirect
+        
+        Redirect(
+          routes.Application.index().url
+        ).withSession(userSession.data.toList: _*)
+      }
+    )
+  }
+  
+  def signOut () = Action { implicit r =>
+    Redirect(routes.Application.index()) withNewSession
+  }
+  
   /**
    * Database 
    */
@@ -124,6 +157,7 @@ object Application extends Controller with StrictLogging {
   import com.gravitydev.scoop._, query._
   import play.api.Play.current
   import play.api.db.DB
+  import java.sql.Connection
   
   def createUser(user: UserData): Long = {
     println("Creating user")
@@ -164,5 +198,28 @@ object Application extends Controller with StrictLogging {
           )().get
       }
     }
-  } 
+  }
+  
+  def checkSignInCredentails(username: String,password: String): Option[models.User] = {
+    DB.withTransaction{ implicit conn => 
+      using (tables.users) {u => 
+        from(u)
+          .where(u.user_name === username && u.password === password)
+          .find(models.Parsers.user(u))
+          .headOption
+      }
+    }
+  }
+  
+  def signInWithCredentials(username: String, password:String): Option[session.SignedInUser] = {
+    DB.withTransaction{ implicit conn => 
+      using (tables.users) {u => 
+        from(u)
+          .where(u.user_name === username && u.password === password)
+          .find(models.Parsers.user(u) >> session.SignedInUser.apply)
+          .headOption
+      }
+    }
+  }
+   
 }
