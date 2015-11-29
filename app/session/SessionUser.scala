@@ -12,11 +12,11 @@ trait SessionUser {
 
 object SessionUser {
   def parse(data: Map[String, String]): Option[SignedInUser] = for {
-    userId            <- data.get("user-id")
+    userId            <- data.get("user-id").map(_.toLong)
     email             <- data.get("user-email")
     username          <- data.get("user-username")
   } yield SignedInUser(
-    User(userId.toLong, username, email)
+    User(userId, username, email)
   )
 }
 
@@ -30,7 +30,7 @@ case class SignedInUser (
   val signedIn = true
   
   val data: Map[String,String] = Map(
-    "user-id" -> s"$user.id",
+    "user-id" -> user.id.toString,
     "user-email" -> user.email,
     "user-username" -> user.username
   )

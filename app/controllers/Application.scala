@@ -54,7 +54,9 @@ object Application extends Controller with BaseController with StrictLogging {
     mapping(
       "username" -> nonEmptyText,
       "password" -> nonEmptyText
-    )(SignInData.apply)(SignInData.unapply)
+    )(SignInData.apply)(SignInData.unapply).verifying("Username or Password was incorrect.", e => {
+      checkSignInCredentails(e.username,e.password).isDefined
+    })
   )
 
   def index = Action { implicit r =>
@@ -123,11 +125,18 @@ object Application extends Controller with BaseController with StrictLogging {
     signInForm.bindFromRequest.fold( 
       f => BadRequest(views.html.signIn(path.getOrElse(""), f)), 
       s => {
-        val user = userByCredentials(s.username, s.password).get
-        //TODO: Authenticate User
-        Redirect(routes.Application.index())
+        val userSession = signInWithCredentials(s.username, s.password).get
+        //TODO: Implement path redirect
+        
+        Redirect(
+          routes.Application.index().url
+        ).withSession(userSession.data.toList: _*)
       }
     )
+  }
+  
+  def signOut () = Action { implicit r =>
+    Redirect(routes.Application.index()) withNewSession
   }
   
   import mysql._
@@ -177,12 +186,23 @@ object Application extends Controller with BaseController with StrictLogging {
     }
   }
   
-  def userByCredentials(username: String, password:String): Option[models.User] = {
+  def checkSignInCredentails(username: String,password: String): Option[models.User] = {
     DB.withTransaction{ implicit conn => 
       using (tables.users) {u => 
         from(u)
           .where(u.user_name === username && u.password === password)
           .find(models.Parsers.user(u))
+          .headOption
+      }
+    }
+  }
+  
+  def signInWithCredentials(username: String, password:String): Option[session.SignedInUser] = {
+    DB.withTransaction{ implicit conn => 
+      using (tables.users) {u => 
+        from(u)
+          .where(u.user_name === username && u.password === password)
+          .find(models.Parsers.user(u) >> session.SignedInUser.apply)
           .headOption
       }
     }

@@ -11,7 +11,7 @@ POST            /contact                                                     con
 GET             /thankYou                                                    controllers.Application.thankYou(confirm: Long, message: String, title: String, tab: String)                   
 GET             /signIn                                                      controllers.Application.signIn(path: String ?= "")
 POST            /signIn                                                      controllers.Application.doSignIn     
-
+GET             /signOut                                                     controllers.Application.signOut
 # Map static resources from the /public folder to the /assets URL path
 GET             /assets/*file                                                controllers.Assets.at(path="/public", file)
 

@@ -2,7 +2,7 @@
 @import play.api.data.Form
 @import play.api.data.format.Formats._
 
-@(f: Form[_])(implicit r: RequestHeader)
+@(f: Form[_])(implicit r: Request[_])
 
 @main(title="Contact Us", tab="contact") {
   <section>
