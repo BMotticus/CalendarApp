@@ -15,8 +15,6 @@ import java.sql.Connection
 
 object Application extends Controller with StrictLogging {
 
-  //val bm = current.plugin[bmotticus.BMPlugin].get
-  
   val userForm = Form(
     tuple(
       "username" -> nonEmptyText,

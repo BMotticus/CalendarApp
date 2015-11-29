@@ -20,13 +20,3 @@ package object controllers{
    }
 
 }
-/**
-import play.api.libs.concurrent.Execution.Implicits._
-import play.api.data._
-import play.api.data.validation._
-import scala.concurrent.Future
-import play.twirl.api.Html
-import org.apache.commons.codec.binary.Hex
-import play.api.libs.json
-import play.api.libs.concurrent.Akka
-*/
