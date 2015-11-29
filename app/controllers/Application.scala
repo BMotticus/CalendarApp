@@ -11,7 +11,6 @@ import play.api.data.format.Formats._
 import play.api.data.Forms._
 import play.api.libs.concurrent.Execution.Implicits._
 
-
 object Application extends Controller with BaseController with StrictLogging {
 
   case class UserData(
@@ -113,7 +112,19 @@ object Application extends Controller with BaseController with StrictLogging {
       views.html.thankYou(confirm = confirm, message = message, title = title, tab = tab)
     }
   }
-  
+
+  def tutorials = Action { implicit r =>
+    Ok(views.html.tutorials())
+  }
+
+  def documents = Action { implicit r =>
+    Ok(views.html.documents())
+  }
+
+  def blog = Action { implicit r =>
+    Ok(views.html.blog())
+  }
+    
   def signIn (path: String) = Action { implicit r =>
     Ok{
       views.html.signIn(path, signInForm.fill(SignInData("","")))
@@ -139,6 +150,9 @@ object Application extends Controller with BaseController with StrictLogging {
     Redirect(routes.Application.index()) withNewSession
   }
   
+  /**
+   * Database 
+   */
   import mysql._
   import com.gravitydev.scoop._, query._
   import play.api.Play.current

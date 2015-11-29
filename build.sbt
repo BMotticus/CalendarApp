@@ -53,6 +53,8 @@ EclipseKeys.withSource := true
 
 TwirlKeys.templateImports += "play.api.Play.current,controllers.AuthRequest" //bmotticus.BMPlugin
 
+ReactJsKeys.harmony := true
+
 scoopPackage := "mysql"
 scoopJdbcUrl := "jdbc:mysql://localhost/play23?characterEncoding=UTF-8"
 scoopJdbcUsername := "root"
@@ -73,6 +75,5 @@ resolvers ++= Seq(
   Resolver.url("Edulify Repository", url("https://edulify.github.io/modules/releases/"))(Resolver.ivyStylePatterns),
   "gravity" at "https://devstack.io/repo/gravitydev/public"
 )
-
 
 

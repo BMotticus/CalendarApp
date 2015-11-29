@@ -4,16 +4,40 @@
 
 @(f: Form[_])(implicit r: Request[_])
 
-@main(title="Contact Us", tab="contact") {
+@main(title="Contact Form", tab="contact") {
   <section>
     <h2>Contact Me</h2>
     
     @helper.form(routes.Application.doContact()) {
-      @inputText( f( "sender" ) )
-      @inputText( f( "about" ) )
-      @textarea( f( "message" ) )
-      @inputText( f( "respond" ) )
-      @fragments.submitAndCancel(routes.Application.index())
+      @inputText(
+        f("sender"),
+        '_label -> "What's your name?", 
+        '_help -> "Optional",
+        'class -> "control",
+        '_showConstraints -> false
+      )
+      @inputText( 
+        f("about"),
+        '_label -> "What is the message about?", 
+        'class -> "control",
+        '_showConstraints -> false
+      )
+      @textarea( 
+        f("message"),
+        '_label -> "Message", 
+        '_help -> "Please be descriptive as possible",
+        'class -> "control",
+        'style -> "width: 400px; height: 100px;",
+        '_showConstraints -> false 
+      )
+      @inputText( 
+        f("respond"),
+        '_label -> "Return Email", 
+        '_help -> "Optional. Only needed if you want us to respond to the message.",
+        'class -> "control",
+        '_showConstraints -> false 
+      )
+      @fragments.submitAndCancel(cancelUrl=routes.Application.index())
     }
   </section>
 }
