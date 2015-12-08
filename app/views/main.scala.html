@@ -8,9 +8,10 @@
 )(content: Html)(implicit r: Request[_])
 
 <!DOCTYPE html>
-
-<html  lang="en">
+<html lang="en">
   <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Disables touch zooming by mobile divices 
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -24,12 +25,18 @@
     <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
     <script type='text/javascript' src='@routes.Assets.at("lib/react/JSXTransformer.js")'></script><!-- React.js -->
     <script type='text/javascript' src='@routes.Assets.at("lib/react/react.js")'></script><!-- React.js -->
-    <script src="@routes.Assets.at("javascripts/app.js")"></script><!-- React.js -->
-    <script src="@routes.Assets.at("javascripts/home.js")"></script><!-- CoffeeScript -->
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6/html5shiv.min.js"></script>
-    <![endif]-->
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/app.js")"></script><!-- React.js -->
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/home.js")"></script><!-- CoffeeScript -->
+    <script type="text/javascript" src='@routes.Assets.at("lib/jquery/jquery.min.js")'></script>
+    <script type="text/javascript" src='@routes.Assets.at("lib/bootstrap/js/bootstrap.min.js")'></script> <!-- Bootstrap -->
+    <script type="text/javascript" src='@routes.Assets.at("lib/bootstrap/js/collapse.js")'></script> <!-- Bootstrap -->
+    <script type="text/javascript" src='@routes.Assets.at("lib/bootstrap/js/transition.js")'></script> <!-- Bootstrap -->
+      <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+      <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+      <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <![endif]-->
     
     <style type="text/css">
     html,
@@ -48,7 +55,7 @@
         /* Negative indent footer by it's height */
         margin: 0 auto -60px;
       }
-      
+      .navbar{font-size:110%;}
       .box {
         background-color: lightskyblue;
         border: 3px solid fuchsia;
@@ -56,8 +63,9 @@
         
       }
       .active{
-        border: 2px solid #a1a1a1;
-        border-radius: 5px;
+        border-top: 5px solid fuchsia;
+        border-radius: 3px;
+        font-size: 105%;
       }
       /* Set the fixed height of the footer here */
       #push,
@@ -73,53 +81,59 @@
 <body>
   <div id="wrap">
   <!-- Begin page content -->
-    <div class="container">
-      <div class="hbox">
-        <div class="flex1">
-          <div class="vbox">
-              <ul class="nav navbar-nav">
-                <li>@{
-                userSession(SessionUser.parse(r.session.data).getOrElse(new AnonymousUser))
-                }</li>
-              </ul>
-              <div class="flex1">
-                <h1>My Website</h1> 
-              </div>
-          </div>
-        </div>
-        <header class="flex6">
-          <nav class="nav-bar navbar-default">
-            <div class="collapse navbar-collapse">
-            @{
-              val links = List(
-                "home" -> routes.Application.index().url -> "Home",
-                "documents" -> routes.Application.documents().url -> "Documentation",
-                "tutorials" -> routes.Application.tutorials().url -> "Tutorials",
-                "contact" -> routes.Application.contact().url -> "Contact Us",
-                "blog" -> routes.Application.blog().url -> "Blog",
-                "register" -> routes.Application.signUp( ).url -> "Registration"
-              )
-              
-              <ul class="nav navbar-nav">
-              {for (((k, url), label) <- links) yield
-                <li class={if (tab==k) "active" else null}>
-                  <a href={url}>{label}</a>
-                </li>
-              }
-              </ul>
-            }
-            <form class="navbar-form navbar-right" role="search">
-              <div class="form-group">
-                <input type="text" class="form-control" placeholder="Search">
-              </div>
-              <button type="submit" class="btn btn-default">Submit</button>
-            </form>
+    <div class="hbox">
+      <div class="flex1">
+        <header>
+          <nav class="navbar navbar-default" style="box-shadow: 0px 4px 15px lightskyblue;">@*navbar-inverse*@
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mottNav"> 
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span> 
+              </button>
+                <a class="navbar-brand" href="@routes.Application.index()">My Website</a>
             </div>
-          </nav>
-        </header>
-       
-      </div>
-      
+                  
+            <div class="collapse navbar-collapse" id="mottNav">
+              <ul class="nav navbar-nav">
+                @{
+                  val links = List(
+                    "home" -> routes.Application.index().url -> "Home",
+                    "tutorials" -> routes.Application.tutorials().url -> "Tutorials",
+                    "documents" -> routes.Application.documents().url -> "Documentation",
+                    "contact" -> routes.Application.contact().url -> "Contact Us",
+                    "blog" -> routes.Application.blog().url -> "Blog",
+                    "register" -> routes.Application.signUp( ).url -> "Registration"
+                  )
+                  
+                  {for (((k, url), label) <- links) yield
+                    <li class={if (tab==k) "active" else null}>
+                      <a href={url}>{label}</a>
+                    </li>
+                  }
+                }
+                <li>
+                  <form class="nav navbar-form navbar-right" role="search">
+                    <div class="form-group hbox">
+                      <input type="text" class="form-control expand-1" placeholder="Search">
+                      <button type="submit" class="btn btn-default">Submit</button>
+                    </div>
+                    
+                  </form>
+                </li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right" style="padding-right:20px;">
+                <li>
+                  @{userSession(SessionUser.parse(r.session.data).getOrElse(new AnonymousUser))}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </header>
+    </div>
+  </div> 
       <article style="margin: 0 auto;">
         @content
       </article>
@@ -137,9 +151,9 @@
         </aside>
       </div>
       -->
-      </div>
-      <div id="push"></div>
-    </div>
+  </div>
+  <div id="push"></div>
+  
     <div id="footer">
       <div class="container">
         <footer>
