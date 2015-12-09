@@ -23,14 +23,7 @@
     <link rel="stylesheet" href='@routes.Assets.at("lib/animate.css/animate.css")'> <!-- Animate -->
     <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")"><!-- Compiled LESS -->
     <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
-    <script type='text/javascript' src='@routes.Assets.at("lib/react/JSXTransformer.js")'></script><!-- React.js -->
-    <script type='text/javascript' src='@routes.Assets.at("lib/react/react.js")'></script><!-- React.js -->
-    <script type="text/javascript" src="@routes.Assets.at("javascripts/app.js")"></script><!-- React.js -->
-    <script type="text/javascript" src="@routes.Assets.at("javascripts/home.js")"></script><!-- CoffeeScript -->
-    <script type="text/javascript" src='@routes.Assets.at("lib/jquery/jquery.min.js")'></script>
-    <script type="text/javascript" src='@routes.Assets.at("lib/bootstrap/js/bootstrap.min.js")'></script> <!-- Bootstrap -->
-    <script type="text/javascript" src='@routes.Assets.at("lib/bootstrap/js/collapse.js")'></script> <!-- Bootstrap -->
-    <script type="text/javascript" src='@routes.Assets.at("lib/bootstrap/js/transition.js")'></script> <!-- Bootstrap -->
+    
       <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
       <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
       <!--[if lt IE 9]>
@@ -39,7 +32,7 @@
       <![endif]-->
     
     <style type="text/css">
-    html,
+      html,
       body {
         height: 100%;
         /* The html and body elements cannot have any padding or margin. */
@@ -63,9 +56,7 @@
         
       }
       .active{
-        border-top: 5px solid fuchsia;
-        border-radius: 3px;
-        font-size: 105%;
+        border-top: 6px solid fuchsia;
       }
       /* Set the fixed height of the footer here */
       #push,
@@ -79,79 +70,66 @@
     </style>
   </head>
 <body>
-  <div id="wrap">
-  <!-- Begin page content -->
-    <div class="hbox">
-      <div class="flex1">
-        <header>
-          <nav class="navbar navbar-default" style="box-shadow: 0px 4px 15px lightskyblue;">@*navbar-inverse*@
-            <div class="container-fluid">
-              <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mottNav"> 
+<div id="wrap">
+  <div class="hbox">
+    <div class="flex1">
+  <!-- Begin page content-->
+      <header>
+        <nav class="navbar navbar-default" style="box-shadow: 0px 4px 15px lightskyblue;">@*navbar-inverse*@
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mottNav"> 
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span> 
               </button>
-                <a class="navbar-brand" href="@routes.Application.index()">My Website</a>
+              <a class="navbar-brand" href="@routes.Application.index()">My Website</a>
             </div>
-                  
-            <div class="collapse navbar-collapse" id="mottNav">
-              <ul class="nav navbar-nav">
-                @{
-                  val links = List(
-                    "home" -> routes.Application.index().url -> "Home",
-                    "tutorials" -> routes.Application.tutorials().url -> "Tutorials",
-                    "documents" -> routes.Application.documents().url -> "Documentation",
-                    "contact" -> routes.Application.contact().url -> "Contact Us",
-                    "blog" -> routes.Application.blog().url -> "Blog",
-                    "register" -> routes.Application.signUp( ).url -> "Registration"
-                  )
-                  
-                  {for (((k, url), label) <- links) yield
-                    <li class={if (tab==k) "active" else null}>
-                      <a href={url}>{label}</a>
-                    </li>
-                  }
-                }
+              
+            <div class="collapse navbar-collapse" style="overflow:hidden" id="mottNav">
+              <ul class="nav navbar-nav navbar-right">
                 <li>
-                  <form class="nav navbar-form navbar-right" role="search">
-                    <div class="form-group hbox">
-                      <input type="text" class="form-control expand-1" placeholder="Search">
+                  <form class="nav navbar-form" role="search">
+                    <div class="hbox-nowrap" style="width: 250px;">
+                      <input type="text" class="form-control" placeholder="Search">
                       <button type="submit" class="btn btn-default">Submit</button>
                     </div>
-                    
                   </form>
                 </li>
-              </ul>
-              <ul class="nav navbar-nav navbar-right" style="padding-right:20px;">
                 <li>
                   @{userSession(SessionUser.parse(r.session.data).getOrElse(new AnonymousUser))}
                 </li>
               </ul>
+              <div style="max-width:700px; margin: 0 auto;">  
+                <ul class="nav navbar-nav">
+                  @{
+                    val links = List(
+                      "home" -> routes.Application.index().url -> "Home",
+                      "tutorials" -> routes.Application.tutorials().url -> "Tutorials",
+                      "documents" -> routes.Application.documents().url -> "Documentation",
+                      "contact" -> routes.Application.contact().url -> "Contact Us",
+                      "blog" -> routes.Application.blog().url -> "Blog",
+                      "register" -> routes.Application.signUp( ).url -> "Registration"
+                    )
+                    
+                    {for (((k, url), label) <- links) yield
+                      <li class={if (tab==k) "active" else null}>
+                        <a href={url}>{label}</a>
+                      </li>
+                    }
+                  }
+                </ul>
+              </div>
             </div>
           </div>
         </nav>
       </header>
     </div>
-  </div> 
-      <article style="margin: 0 auto;">
-        @content
-      </article>
-      
-      <!--
-      <div id="sidebar">  
-        <aside>
-          <ul>
-            <li><a href="#">Sidebar 1</a></li>
-            <li><a href="#">Sidebar 2</a></li>
-            <li><a href="#">Sidebar 3</a></li>
-            <li><a href="#">Sidebar 4</a></li>
-            <li><a href="#">Sidebar 5</a></li>
-          </ul>
-        </aside>
-      </div>
-      -->
   </div>
+  <article style="margin: 0 auto;">
+    @content
+  </article>
+</div>
   <div id="push"></div>
   
     <div id="footer">
@@ -161,6 +139,13 @@
         </footer>
       </div>
     </div>
-    
+  <script type='text/javascript' src='@routes.Assets.at("lib/react/JSXTransformer.js")'></script><!-- React.js -->
+  <script type='text/javascript' src='@routes.Assets.at("lib/react/react.js")'></script><!-- React.js -->
+  <script type="text/javascript" src="@routes.Assets.at("javascripts/app.js")"></script><!-- React.js -->
+  <script type="text/javascript" src="@routes.Assets.at("javascripts/home.js")"></script><!-- CoffeeScript -->
+  <script type="text/javascript" src='@routes.Assets.at("lib/jquery/jquery.min.js")'></script>
+  <script type="text/javascript" src='@routes.Assets.at("lib/bootstrap/js/bootstrap.min.js")'></script> <!-- Bootstrap -->
+  <script type="text/javascript" src='@routes.Assets.at("lib/bootstrap/js/collapse.js")'></script> <!-- Bootstrap -->
+  <script type="text/javascript" src='@routes.Assets.at("lib/bootstrap/js/transition.js")'></script> <!-- Bootstrap -->
   </body>
 </html>
