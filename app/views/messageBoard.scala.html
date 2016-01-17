@@ -1,0 +1,37 @@
+@()(implicit r: Request[_])
+
+@main(title="Message Board", tab="messageBoard") {
+  <section>
+    <h2>Messages</h2>
+    
+    <article id="loremText"></article>
+            
+  </section>
+  <script type="text/jsx">
+    var LoremText = React.createClass({
+      render: function(){
+        return <section className="box flex1"><h3>{this.props.header}</h3>
+               <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+               Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+               Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+               Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+               <p>{this.props.children}</p></section>
+      }
+    });
+    React.render(
+      <div className="vbox">
+      <LoremText header="Introduction"/>
+      This is my children
+      <LoremText header="Chapter 1" />
+        This is my children
+      <LoremText header="Chapter 2" />
+        This is my children
+      <LoremText header="Chapter 3" />
+        This is my children
+      <LoremText header="Chapter 4" />
+        This is my children
+      </div>
+    , document.getElementById("loremText"));
+    
+  </script>
+}

@@ -9,12 +9,16 @@ GET             /userInfo/:userId                                            con
 GET             /contact                                                     controllers.Application.contact
 POST            /contact                                                     controllers.Application.doContact     
 GET             /thankYou                                                    controllers.Application.thankYou(confirm: Long, message: String, title: String, tab: String)                   
-GET             /tutorials                                                   controllers.Application.tutorials
-GET             /documents                                                   controllers.Application.documents
-GET             /blog                                                        controllers.Application.blog
+GET             /schedule                                                    controllers.Application.schedule
+GET             /messegeBoard                                                controllers.Application.messageBoard
 GET             /signIn                                                      controllers.Application.signIn(path: String ?= "")
 POST            /signIn                                                      controllers.Application.doSignIn     
 GET             /signOut                                                     controllers.Application.signOut
+
+GET             /ws                                                          controllers.Messanger.webSocket
+
 # Map static resources from the /public folder to the /assets URL path
+GET             /assets/*file                                                controllers.Assets.versioned(path="/public", file: Asset)
+
 GET             /assets/*file                                                controllers.Assets.at(path="/public", file)
 

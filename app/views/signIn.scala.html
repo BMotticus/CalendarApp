@@ -20,8 +20,8 @@
     @helper.form(routes.Application.doSignIn()){
       <input type="hidden" name="path" value="@path" />
       @helper.inputText(
-        f("username"), 
-        '_label -> "Username", 
+        f("email"), 
+        '_label -> "Email", 
         'class -> "control",
         '_showConstraints -> false,
         '_error -> f.globalError

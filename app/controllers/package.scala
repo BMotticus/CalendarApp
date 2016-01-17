@@ -17,8 +17,8 @@ import session._
 /**
  * Created by brandon Mott
  */
-trait BaseController extends RequestOps with ControllerOps with StrictLogging {self: Controller =>
-  def conf = current.configuration
+trait BaseController extends RequestOps with ControllerOps with StrictLogging with plugins.BMotticusContext {self: Controller =>
+  def config = current.configuration
   
   object Ajax {
     def fieldErrors (errors: (String,String)*) = BadRequest(
@@ -63,7 +63,7 @@ trait ControllerOps extends Results {
 
 }
 
-object AuthAction extends ActionBuilder [AuthRequest] with ControllerOps{
+object AuthAction extends ActionBuilder [AuthRequest] with ControllerOps with plugins.BMotticusContext{
   def invokeBlock [T](request: Request[T], block: AuthRequest[T] => Future[Result]) = {
     signedInUser(request) fold(
       _ => Future.successful(goToSignIn(request)),

@@ -1,0 +1,13 @@
+@(implicit r: Request[_])
+
+<aside>
+  @r.flash.get("msg").map { msg =>
+    <p>@msg</p>
+  }
+  @r.flash.get("success").map { msg =>
+    <p>@msg</p>
+  }
+  @r.flash.get("error").map { msg =>
+    <p>@msg</p>
+  }
+</aside>

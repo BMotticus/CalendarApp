@@ -14,9 +14,8 @@ object SessionUser {
   def parse(data: Map[String, String]): Option[SignedInUser] = for {
     userId            <- data.get("user-id").map(_.toLong)
     email             <- data.get("user-email")
-    username          <- data.get("user-username")
   } yield SignedInUser(
-    User(userId, username, email)
+    User(userId, email)
   )
 }
 
@@ -31,7 +30,6 @@ case class SignedInUser (
   
   val data: Map[String,String] = Map(
     "user-id" -> user.id.toString,
-    "user-email" -> user.email,
-    "user-username" -> user.username
+    "user-email" -> user.email
   )
 }
