@@ -81,6 +81,8 @@ object AuthAction extends ActionBuilder [AuthRequest] with ControllerOps with pl
 trait AuthRequestHeader extends RequestHeader {
   def signedInUser: SignedInUser
   def user = signedInUser.user
+  lazy val usersM = plugins.BMotticusContext.bm.usersM
+  lazy val googleAuth = plugins.BMotticusContext.bm.googleAuth
 }
 
 class AuthRequest [T](

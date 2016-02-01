@@ -1,5 +1,5 @@
 package models
-
+import play.api.libs.json._
 case class User (
   id: Long,
   email: String
@@ -20,5 +20,7 @@ case class ContactData(
 
 case class SignInData(email: String, password:String)
 
-
+case class ClientConfig(
+  web: JsValue
+)
 

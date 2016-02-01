@@ -155,6 +155,8 @@
   <script type='text/javascript' src='@routes.Assets.at("lib/react/JSXTransformer.js")'></script><!-- React.js -->
   <script type="text/javascript" src="@routes.Assets.at("javascripts/app.js")"></script><!-- React.js -->
   <script type="text/javascript" src="@routes.Assets.at("javascripts/home.js")"></script><!-- CoffeeScript -->
+  
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
   @scripts.map { script =>
     <script src="/assets/javascripts/@{script}.js"></script>
   } 

@@ -3,17 +3,20 @@
 
 # Home page
 GET             /                                                            controllers.Application.index
-GET             /signUp                                                      controllers.Application.signUp
-POST            /signUp                                                      controllers.Application.doSignUp
-GET             /userInfo/:userId                                            controllers.Application.userInfo(userId: Long)
-GET             /contact                                                     controllers.Application.contact
-POST            /contact                                                     controllers.Application.doContact     
-GET             /thankYou                                                    controllers.Application.thankYou(confirm: Long, message: String, title: String, tab: String)                   
-GET             /schedule                                                    controllers.Application.schedule
-GET             /messegeBoard                                                controllers.Application.messageBoard
-GET             /signIn                                                      controllers.Application.signIn(path: String ?= "")
-POST            /signIn                                                      controllers.Application.doSignIn     
-GET             /signOut                                                     controllers.Application.signOut
+GET             /bmApp/signUp                                                      controllers.Application.signUp
+POST            /bmApp/signUp                                                      controllers.Application.doSignUp
+GET             /bmApp/userInfo/:userId                                            controllers.Application.userInfo(userId: Long)
+GET             /bmApp/contact                                                     controllers.Application.contact
+POST            /bmApp/contact                                                     controllers.Application.doContact     
+GET             /bmApp/thankYou                                                    controllers.Application.thankYou(confirm: Long, message: String, title: String, tab: String)                   
+GET             /bmApp/schedule                                                    controllers.Application.schedule
+GET             /bmApp/messegeBoard                                                controllers.Application.messageBoard
+GET             /bmApp/signIn                                                      controllers.Application.signIn(path: String ?= "")
+POST            /bmApp/signIn                                                      controllers.Application.doSignIn     
+GET             /bmApp/signOut                                                     controllers.Application.signOut
+
+GET             /clientSignIn                                                controllers.Application.clientSignIn
+GET             /clientRedirect                                              controllers.Application.clientRedirect
 
 GET             /ws                                                          controllers.Messanger.webSocket
 

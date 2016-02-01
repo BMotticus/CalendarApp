@@ -132,4 +132,17 @@ object Application extends Controller with BaseController with plugins.BMotticus
     Redirect(routes.Application.index()) withNewSession
   }
   
+  def clientSignIn () = Action { implicit r =>
+    val clientId = bm.googleAuth.authenticate()
+    Ok{
+      views.html.clientSignIn(clientId)
+    }
+  }
+  
+  def clientRedirect() AuthAction { implicit r =>
+    Ok{
+      views.html.clientRedirect()
+    }
+  }
+  
 }
