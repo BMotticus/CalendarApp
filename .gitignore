@@ -31,8 +31,8 @@ lib_managed/
 src_managed/
 project/boot/
 project/plugins/project/
-.sbtopts
-
+/.sbtopts
+/.store
 # Scala-IDE specific
 .scala_dependencies
 .worksheet
@@ -56,6 +56,7 @@ server.pid
 .cache
 ### do not ignore application.conf-template ###
 conf/application.conf
+conf/
 *.conf
 #Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android  #Studio
 
