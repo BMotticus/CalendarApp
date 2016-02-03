@@ -37,6 +37,14 @@ class GoogleOAuthClient (ws: WSClient, clientConf: ConfigObject, apiKey: String,
       res
     }
   }
+
+  /**
+    * Call googles API After Authenticating with OAuth 2.0 
+    * @param redirectUrl URL that receives the response
+    * @param token access token made by OAuth
+    * @return
+    */
+  def shareCalendar (redirectUrl: String, token: String) = ???
 }
 
 
