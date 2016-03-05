@@ -20,16 +20,6 @@ import session._
 trait BaseController extends RequestOps with ControllerOps with StrictLogging with plugins.BMotticusContext {self: Controller =>
   def config = current.configuration
   
-  object Ajax {
-    def fieldErrors (errors: (String,String)*) = BadRequest(
-      Json.obj("fieldErrors" -> Json.obj(
-        errors.map {case (k,v) => k -> (v: Json.JsValueWrapper)} : _*
-      ))
-    )
-    def created (url: String) = Created(Json.obj("url" -> url)).withHeaders("Location" -> url)
-    def success (res: JsValue = Json.obj("success" -> true)) = Ok(res)
-  }
-
   def bodyParamOpt (name: String)(implicit r: Request[AnyContent]) = r.body.asFormUrlEncoded.get.get(name).flatMap(_.headOption)
 
   def bodyParam (name: String)(implicit r: Request[AnyContent]) = bodyParamOpt(name).get
