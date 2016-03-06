@@ -3,9 +3,6 @@ package session
 import models._
 import scala.language.postfixOps
 
-/**
-  * Created by brandonmott1 on 11/24/15.
-  */
 trait SessionUser {
   val signedIn: Boolean
 }

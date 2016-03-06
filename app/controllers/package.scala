@@ -14,22 +14,10 @@ import play.api.mvc._
 import play.api.db._
 import play.api.http._
 import session._
-/**
- * Created by brandon Mott
- */
+
 trait BaseController extends RequestOps with ControllerOps with StrictLogging with plugins.BMotticusContext {self: Controller =>
   def config = current.configuration
   
-  object Ajax {
-    def fieldErrors (errors: (String,String)*) = BadRequest(
-      Json.obj("fieldErrors" -> Json.obj(
-        errors.map {case (k,v) => k -> (v: Json.JsValueWrapper)} : _*
-      ))
-    )
-    def created (url: String) = Created(Json.obj("url" -> url)).withHeaders("Location" -> url)
-    def success (res: JsValue = Json.obj("success" -> true)) = Ok(res)
-  }
-
   def bodyParamOpt (name: String)(implicit r: Request[AnyContent]) = r.body.asFormUrlEncoded.get.get(name).flatMap(_.headOption)
 
   def bodyParam (name: String)(implicit r: Request[AnyContent]) = bodyParamOpt(name).get
@@ -83,6 +71,7 @@ trait AuthRequestHeader extends RequestHeader {
   def user = signedInUser.user
   lazy val usersM = plugins.BMotticusContext.bm.usersM
   lazy val googleAuth = plugins.BMotticusContext.bm.googleAuth
+  
 }
 
 class AuthRequest [T](
@@ -96,7 +85,8 @@ trait RequestOps {
 
   implicit class RequestHeaderOps (r: RequestHeader) {
     def isSecure = 
-      r.headers.get(HeaderNames.X_FORWARDED_PROTO).map(_.toLowerCase == "https") getOrElse false
+      r.headers.get(HeaderNames.X_FORWARDED_PROTO).exists(_.toLowerCase == "https")
+    def clientRedirect = routes.OAuth.clientRedirect().absoluteURL()(r)
   }
 }
 

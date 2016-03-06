@@ -2,7 +2,7 @@
 @import play.api.data.Form
 @import play.api.data.format.Formats._
 
-@(path: String, f: Form[_])(implicit r: Request[_])
+@(path: String, f: Form[_])(implicit r: Request[_], m: Messages)
 
 @main(title="Sign In", tab="signIn"){
 

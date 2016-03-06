@@ -1,6 +1,9 @@
 package controllers
 
+import javax.inject.Inject
+
 import models._
+import play.api.i18n.{I18nSupport, MessagesApi}
 import scala.language.postfixOps
 import play.api._
 import play.api.mvc._
@@ -14,7 +17,7 @@ import play.api.data.Form
 import play.api.data.format.Formats._ 
 import play.api.libs.concurrent.Execution.Implicits._
 
-object Application extends Controller with BaseController with plugins.BMotticusContext {
+class Application  @Inject() (val messagesApi: MessagesApi) extends Controller with BaseController with I18nSupport  {
   
   val contactForm = Form(
     mapping(
@@ -67,6 +70,10 @@ object Application extends Controller with BaseController with plugins.BMotticus
     )
   }
   
+  def schedule = Action { implicit r =>
+    Ok(views.html.schedule())
+  }
+  
   def userInfo(userId: Long) = Action { implicit r =>
     val user = bm.usersM.findUserById(userId)
     Ok{
@@ -99,10 +106,6 @@ object Application extends Controller with BaseController with plugins.BMotticus
     }
   }
 
-  def schedule = Action { implicit r =>
-    Ok(views.html.schedule())
-  }
-
   def messageBoard = Action { implicit r =>
     Ok(views.html.messageBoard())
   }
@@ -132,17 +135,20 @@ object Application extends Controller with BaseController with plugins.BMotticus
     Redirect(routes.Application.index()) withNewSession
   }
   
-  def clientSignIn () = Action { implicit r =>
-    val clientId = bm.googleAuth.authenticate()
-    Ok{
-      views.html.clientSignIn(clientId)
+  //get calendar infomation
+  def calendar(clientId: Long) = Action { implicit r =>
+    Ok(views.html.calendar())
+  }
+
+  def clientSignIn (clientId: Long) = Action { implicit r =>
+    //val clientId = authenticate()
+    r.session.get(OAuth.tokenKey) match {
+      case Some(token) =>
+        val url = routes.Application.calendar(clientId).absoluteURL()
+        bm.googleAuth.shareCalendar(url, token)
+        Ok
+      case None => 
+        Redirect(bm.googleAuth.authorizeUrl(routes.Application.calendar(clientId).url))
     }
   }
-  
-  def clientRedirect() AuthAction { implicit r =>
-    Ok{
-      views.html.clientRedirect()
-    }
-  }
-  
 }

@@ -8,9 +8,7 @@ import play.api.db.DB
 import java.sql.Connection
 import models._
 
-/**
-  * Created by brandonmott1 on 12/30/15.
-  */
+
 class UsersModule(protected val ctx: Context) extends ContextOps{
   
   def createUser(user: UserData): Long = {
@@ -44,7 +42,7 @@ class UsersModule(protected val ctx: Context) extends ContextOps{
         insertInto(m)
           .values(
             m.sender_info := data.sender,
-            m.about := Option(data.about).filter(_.nonEmpty),
+            m.description := Option(data.about).filter(_.nonEmpty),
             m.message := data.message,
             m.respond_info := Option(data.respond).filter(_.nonEmpty),
             m.sent_date := DateTime.now 

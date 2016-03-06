@@ -1,4 +1,4 @@
-@(implicit r: Request[_])
+@(implicit r: Request[_], m: Messages)
 
 <aside>
   @r.flash.get("msg").map { msg =>
