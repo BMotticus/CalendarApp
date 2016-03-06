@@ -10,10 +10,10 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import akka.actor._
 import play.api.libs.json._
 import actors.WebSocketActor
-/**
-  * Created by brandonmott1 on 12/10/15.
-  */
-object Messanger extends Controller with BaseController with StrictLogging {
+import javax.inject.Inject
+import play.api.i18n.{I18nSupport, MessagesApi}
+
+class Messanger @Inject() (val messagesApi: MessagesApi) extends Controller with BaseController with I18nSupport {
   
   /**
     * This class is equivalent to incoming JSON for every request to `def webSocket` and FrameFormatter used to translate 

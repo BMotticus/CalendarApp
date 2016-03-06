@@ -14,9 +14,7 @@ import play.api.mvc._
 import play.api.db._
 import play.api.http._
 import session._
-/**
- * Created by brandon Mott
- */
+
 trait BaseController extends RequestOps with ControllerOps with StrictLogging with plugins.BMotticusContext {self: Controller =>
   def config = current.configuration
   
@@ -73,6 +71,7 @@ trait AuthRequestHeader extends RequestHeader {
   def user = signedInUser.user
   lazy val usersM = plugins.BMotticusContext.bm.usersM
   lazy val googleAuth = plugins.BMotticusContext.bm.googleAuth
+  
 }
 
 class AuthRequest [T](
@@ -86,7 +85,8 @@ trait RequestOps {
 
   implicit class RequestHeaderOps (r: RequestHeader) {
     def isSecure = 
-      r.headers.get(HeaderNames.X_FORWARDED_PROTO).map(_.toLowerCase == "https") getOrElse false
+      r.headers.get(HeaderNames.X_FORWARDED_PROTO).exists(_.toLowerCase == "https")
+    def clientRedirect = routes.OAuth.clientRedirect().absoluteURL()(r)
   }
 }
 

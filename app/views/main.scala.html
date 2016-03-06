@@ -5,7 +5,7 @@
   tab: String = "", 
   styles: Seq[String] = Seq.empty, 
   scripts: Seq[String] = Seq.empty
-)(content: Html)(implicit r: Request[_])
+)(content: Html)(implicit r: Request[_], m: Messages)
 
 <!DOCTYPE html>
 <html lang="en">

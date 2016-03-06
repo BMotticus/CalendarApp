@@ -16,14 +16,18 @@ class BMotticus (implicit val app: Application) extends BMPlugin with Context wi
   
   implicit def actorSystem = Akka.system
   
+  lazy val oAuthConfigs = new OAuthConfiguration(config.getObject("google.client_id.json.web").get)
+  
   lazy val usersM = new modules.UsersModule(ctx)
   
   lazy val googleAuth = new modules.GoogleOAuthClient(
     WS.client(app),
-    config.getObject("google.client_id.json.web").get,
+    oAuthConfigs,
     config.getString("google.api_key").get  
   )
+  
   println(config.getObject("google.client_id.json"))
+  
   override def onStart() = {
     logger.info("BMotticus application started using " + Thread.currentThread.getName)
     super.onStart()
