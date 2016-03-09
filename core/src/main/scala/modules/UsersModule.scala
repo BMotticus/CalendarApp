@@ -28,7 +28,7 @@ class UsersModule(protected val ctx: Context) extends ContextOps{
   def findUserById(userId: Long): models.User = {
     DB.withTransaction{implicit conn =>
       using (tables.users) {u => 
-        from(u)
+         from(u)
           .where(u.id === userId)
           .find(models.Parsers.user(u))
           .headOption getOrElse sys.error("No User found for id: " + userId)

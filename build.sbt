@@ -1,7 +1,6 @@
 //import com.typesafe.sbteclipse.core.EclipsePlugin.EclipseKeys
 import sbt._
 import sbt.Keys._
-import play.Play.autoImport._
 import PlayKeys._
 import play.twirl.sbt.SbtTwirl
 import play.twirl.sbt.Import.TwirlKeys
@@ -42,7 +41,8 @@ lazy val core = Project("core",  file("core"))
       "com.gravitydev"             %% "trigger" % "0.1.3-SNAPSHOT",
       "com.gravitydev"             %%  "scoop"   % "1.1.0-SNAPSHOT",
       "org.scalamock"              %% "scalamock-scalatest-support" % "3.2" % "test",
-      "com.google.api.client" % "google-api-client" % "1.4.0-alpha",
+      //"com.google.api.client"       % "google-api-client" % "1.4.0-alpha",
+      "com.google.api-client"       % "google-api-client" % "1.21.0",
       "com.googlecode.kiama"        % "kiama_2.11" % "2.0.0-SNAPSHOT"
     ),
     EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Managed,
@@ -80,6 +80,7 @@ lazy val root = Project("site",  file("."))
       //"com.typesafe.akka"          %% "akka-actor" % "2.3.2",
       "org.scalatestplus"          %% "play" % "1.4.0" % "test",
       "org.webjars"                %% "webjars-play" % "2.4.0-1",
+      "org.webjars"                 % "bootstrap" % "3.3.5",
       "org.webjars"                 % "normalize.css" % "3.0.2",
       "org.webjars"                 % "flat-ui"          % "bcaf2de95e",
       "org.webjars"                 % "react" % "0.13.3"

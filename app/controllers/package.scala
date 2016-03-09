@@ -11,7 +11,6 @@ import play.api.Play.current
 import play.api.libs.concurrent.Execution.Implicits._
 import com.typesafe.scalalogging.StrictLogging
 import play.api.mvc._
-import play.api.db._
 import play.api.http._
 import session._
 
@@ -86,7 +85,7 @@ trait RequestOps {
   implicit class RequestHeaderOps (r: RequestHeader) {
     def isSecure = 
       r.headers.get(HeaderNames.X_FORWARDED_PROTO).exists(_.toLowerCase == "https")
-    def clientRedirect = routes.OAuth.clientRedirect().absoluteURL()(r)
+    //def clientRedirect = routes.OAuth.clientRedirect().absoluteURL()(r)
   }
 }
 

@@ -1,6 +1,6 @@
-@(user: models.User)(implicit r: Request[_], m: Messages)
+@(user: models.User)(implicit r: AuthRequest[_], m: Messages)
 
-@main(title="User Info",tab="home"){
+@layouts.front(title="User Info",tab="dashboard"){
 
   <section>
     <h2>User Info</h2>

@@ -3,7 +3,7 @@
 @import play.api.mvc.Request
 @import controllers.{AuthRequest, routes}
 
-@(sessionUser: SessionUser)(implicit r: Request[_], m: Messages)
+@(sessionUser: SessionUser)(implicit r: AuthRequest[_], m: Messages)
 @{sessionUser match {
   case su @ SignedInUser(user) => {
     <span>

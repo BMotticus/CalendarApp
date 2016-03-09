@@ -4,7 +4,7 @@
 
 @(path: String, f: Form[_])(implicit r: Request[_], m: Messages)
 
-@main(title="Sign In", tab="signIn"){
+@layouts.front(title="Sign In", tab="signIn"){
 
   <section>
     <h1>Sign In</h1>
@@ -32,7 +32,7 @@
           'class -> "control",
           '_showConstraints -> false 
         )
-        @fragments.submitAndCancel(routes.Application.index())
+        @fragments.submitAndCancel(routes.Application.index(), "Sign In")
       }
       
     </section>
