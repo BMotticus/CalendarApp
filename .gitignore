@@ -54,9 +54,9 @@ server.pid
 *.eml
 /dist/
 .cache
+
 ### do not ignore application.conf-template ###
 conf/application.conf
-conf/
 *.conf
 #Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android  #Studio
 
