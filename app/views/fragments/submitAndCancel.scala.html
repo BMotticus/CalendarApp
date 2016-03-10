@@ -1,6 +1,6 @@
-@(cancelUrl: Call)
+@(cancelUrl: Call, submit: String = "Submit")
 
 <div>
-  <button class='control control-special' type='submit'>Submit</button>
+  <button class='control control-special' type='submit'>@submit</button>
   <a href='@cancelUrl'><button type='button' class='control text-danger'>Cancel</button></a>
 </div>

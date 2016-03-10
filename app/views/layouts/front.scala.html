@@ -25,7 +25,7 @@
     <link rel="stylesheet" href='@routes.Assets.at("lib/normalize.css/normalize.css")'> <!-- normalize -->
     <link href="@routes.Assets.versioned("lib/flat-ui/css/flat-ui.css")" rel="stylesheet"> <!-- flat ui -->
     <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")"><!-- Compiled LESS -->
-    <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+    <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("../../../public/images/favicon.png")">
       <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
       <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
       <!--[if lt IE 9]>
@@ -68,6 +68,9 @@
       .active{
         border-top: 4px solid #0dbfb9;
       }
+      .inactive{
+        border-top: 4px solid #C1E8F2;
+      }
       /* Set the fixed height of the footer here */
       #push,
       #footer {
@@ -105,7 +108,7 @@
                   </form>
                 </li>
                 <li>
-                  @{userSession(SessionUser.parse(r.session.data).getOrElse(new AnonymousUser))}
+                  @*{fragments.userSession(SessionUser.parse(r.session.data).getOrElse(new AnonymousUser))}*@
                 </li>
               </ul>
               <div style="max-width:700px; margin: 0 auto;">  
@@ -113,14 +116,14 @@
                   @{
                     val links = List(
                       "home" -> routes.Application.index().url -> "Home",
-                      "schedule" -> routes.Application.schedule().url -> "Schedule",
-                      "messageBoard" -> routes.Application.messageBoard().url -> "Messege Board",
-                      "contact" -> routes.Application.contact().url -> "Contact",
+                      "tutorials" -> routes.Application.tutorials().url -> "Tutorials",
+                      "news" -> routes.Application.news().url -> "New Features",
+                      "contact" -> routes.Application.contact().url -> "Contact Us",
                       "register" -> routes.Application.signUp().url -> "Registration"
                     )
                     
                     {for (((k, url), label) <- links) yield
-                      <li class={if (tab==k) "active" else null}>
+                      <li class={if (tab==k) "active" else "inactive"}>
                         <a href={url}>{label}</a>
                       </li>
                     }
@@ -138,7 +141,7 @@
         @content
     </article>
   </div>
-
+  @fragments.flash(r,m)
   <div id="push"></div>
 </div>  
     <div id="footer">
@@ -150,7 +153,7 @@
     </div>
   <script type="text/javascript" src='@routes.Assets.at("lib/jquery/jquery.min.js")'></script><!-- jQuery.js -->
   <script type="text/javascript" src='@routes.Assets.at("lib/bootstrap/js/bootstrap.min.js")'></script> <!-- Bootstrap -->  
-  <script type='text/javascript' src='@routes.Assets.versioned("javascripts/flat-ui.min.js")'></script>
+  <script type='text/javascript' src='@routes.Assets.versioned("../../../public/javascripts/flat-ui.min.js")'></script>
   <script type='text/javascript' src='@routes.Assets.at("lib/react/react.js")'></script><!-- React.js -->
   <script type='text/javascript' src='@routes.Assets.at("lib/react/JSXTransformer.js")'></script><!-- React.js -->
   <script type="text/javascript" src="@routes.Assets.at("javascripts/app.js")"></script><!-- React.js -->

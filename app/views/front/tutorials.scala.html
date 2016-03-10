@@ -1,11 +1,11 @@
 @()(implicit r: Request[_], m: Messages)
 
-@main(title="Message Board", tab="messageBoard") {
+@layouts.front(title="Tutorials", tab="tutorials") {
   <section>
-    <h2>Messages</h2>
+    <h2>Tutorials</h2>
     
     <article id="loremText"></article>
-            
+    
   </section>
   <script type="text/jsx">
     var LoremText = React.createClass({
@@ -34,4 +34,5 @@
     , document.getElementById("loremText"));
     
   </script>
+  
 }

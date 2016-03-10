@@ -1,0 +1,166 @@
+@import _root_.session._
+@import models._
+@(
+  title: String,
+  tab: String = "",
+  styles: Seq[String] = Seq.empty,
+  scripts: Seq[String] = Seq.empty
+)(content: Html)(implicit r: AuthRequest[_], m: Messages)
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- Disables touch zooming by mobile divices 
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    -->
+    <title>@title - BMotticus</title>
+      <!-- assets folder target/web/public ;) -->
+    <link rel="stylesheet" href='@routes.Assets.at("lib/bootstrap/css/bootstrap.min.css")'> <!-- Bootstrap -->
+    @styles.map { style =>
+      <link href='@routes.Assets.at(s"stylesheets/$style.css")' type='text/css' rel='stylesheet'/>
+    }
+    <link rel="stylesheet" href='@routes.Assets.at("lib/normalize.css/normalize.css")'> <!-- normalize -->
+    <link href="@routes.Assets.versioned("lib/flat-ui/css/flat-ui.css")" rel="stylesheet"> <!-- flat ui -->
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")"><!-- Compiled LESS -->
+    <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("../../../public/images/favicon.png")">
+      <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+      <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+      <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <![endif]-->
+
+    <style type="text/css">
+    html,
+    body {
+    height: 100%;
+    /* The html and body elements cannot have any padding or margin. */
+    }
+
+    /* Wrapper for page content to push down footer */
+    #wrap {
+    line-height: 1.6;
+    padding: 2%;
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    /* Negative indent footer by it's height */
+    margin: 0 auto -60px;
+    }
+    .navbar{
+    font-size:110%;
+    font-weight:700;
+
+    }
+    .container {
+    width: auto;
+    max-width: 980px;
+    }
+    .box {
+    background-color: #deeef7;
+    border: 3px solid #0dbfb9;
+    padding: 0 10px 5px;;
+
+    }
+    .active{
+    border-top: 4px solid #0dbfb9;
+    }
+    .inactive{
+    border-top: 4px solid #C1E8F2;
+    }
+    /* Set the fixed height of the footer here */
+    #push,
+    #footer {
+    height: 60px;
+    }
+    #footer {
+    text-align: center;
+    }
+    </style>
+  </head>
+  <body>
+    <div id="wrap">
+      <div class="hbox">
+        <div class="flex1">
+            <!-- Begin page content-->
+          <header>
+            <nav class="navbar navbar-default" style="box-shadow: 0px 4px 15px lightskyblue;">@*navbar-inverse*@
+              <div class="container-fluid">
+                <div class="navbar-header">
+                  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mottNav">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand" href="@routes.Application.index()">My Website</a>
+                </div>
+                <div class="collapse navbar-collapse" style="overflow:hidden" id="mottNav">
+                  <ul class="nav navbar-nav navbar-right">
+                    <li>
+                      <form class="nav navbar-form" role="search" style="padding-right:50px;">
+                        <div class="hbox-nowrap" style="width: 200px;">
+                          <input type="text" class="form-control" placeholder="Search">
+                          <button type="submit" class="btn btn-default">Submit</button>
+                        </div>
+                      </form>
+                    </li>
+                    <li>
+                    @{fragments.userSession(SessionUser.parse(r.session.data).getOrElse(new AnonymousUser))}
+                    </li>
+                  </ul>
+                  <div style="max-width:700px; margin: 0 auto;">
+                    <ul class="nav navbar-nav">
+                    @{
+                      val links = List(
+                        "dashboard" -> routes.Dashboard.index(r.signedInUser.user.id).url -> "Dashboard",
+                        "schedules" -> routes.Dashboard.schedules(r.signedInUser.user.id).url -> "Schedules",
+                        "messageBoard" -> routes.Dashboard.messageBoard(r.signedInUser.user.id).url -> "Message Board",
+                        "contacts" -> routes.Dashboard.contacts(r.signedInUser.user.id).url -> "Contacts"
+                      )
+
+                      {for (((k, url), label) <- links) yield
+                        <li class={if (tab==k) "active" else null}>
+                        <a href={url}>{label}</a>
+                        </li>
+                      }
+                    }
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </nav>
+          </header>
+        </div>
+      </div>
+      <div class="container">
+        <article>
+        @content
+        </article>
+      </div>
+      @fragments.flash(r,m)
+      <div id="push"></div>
+    </div>
+    <div id="footer">
+      <div class="container">
+        <footer>
+          Copyright © brandonmotticus@@gmail.com
+        </footer>
+      </div>
+    </div>
+    <script type="text/javascript" src='@routes.Assets.at("lib/jquery/jquery.min.js")'></script><!-- jQuery.js -->
+    <script type="text/javascript" src='@routes.Assets.at("lib/bootstrap/js/bootstrap.min.js")'></script> <!-- Bootstrap -->
+    <script type='text/javascript' src='@routes.Assets.versioned("../../../public/javascripts/flat-ui.min.js")'></script>
+    <script type='text/javascript' src='@routes.Assets.at("lib/react/react.js")'></script><!-- React.js -->
+    <script type='text/javascript' src='@routes.Assets.at("lib/react/JSXTransformer.js")'></script><!-- React.js -->
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/app.js")"></script><!-- React.js -->
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/home.js")"></script><!-- CoffeeScript -->
+
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    @scripts.map { script =>
+      <script src="/assets/javascripts/@{script}.js"></script>
+    }
+  </body>
+</html>

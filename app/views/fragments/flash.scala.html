@@ -1,6 +1,6 @@
 @(implicit r: Request[_], m: Messages)
 
-<aside>
+<aside id='flash'>
   @r.flash.get("msg").map { msg =>
     <p>@msg</p>
   }

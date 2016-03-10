@@ -1,6 +1,6 @@
 @(message: String)(implicit r: Request[_], m: Messages)
 
-@main(title="Home", tab="home") {
+@layouts.front(title="Home", tab="home") {
   <div id="react-main-message"></div>
     <h2>@message</h2>
   <!-- Part 1: Wrap all page content here -->
@@ -50,7 +50,7 @@
       }
     });
   
-      React.render(<HelloWorld />, document.getElementById("react-main-message"));
+      React.render(<HelloWorld />, document.getElementById("react-front-message"));
   </script>
   
 }

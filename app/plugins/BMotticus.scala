@@ -1,14 +1,13 @@
 package plugins
 
-import com.edulify.play.hikaricp._
 import com.typesafe.scalalogging.StrictLogging
 import play.api.libs.concurrent.{Akka, Execution}
 import play.api.Application
-import play.api.db._
 import modules._
 import play.api.libs.ws._
+import javax.inject.{Inject,Singleton}
 
-class BMotticus (implicit val app: Application) extends BMPlugin with Context with StrictLogging{
+class BMotticus  @Inject() (implicit val app: Application) extends BMPlugin with Context with StrictLogging{
   
   lazy val config = app.configuration
 
