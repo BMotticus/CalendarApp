@@ -12,7 +12,7 @@ object SessionUser {
     userId            <- data.get("user-id").map(_.toLong)
     email             <- data.get("user-email")
   } yield SignedInUser(
-    User(userId, email)
+    UserInfo(userId, email)
   )
 }
 
@@ -21,7 +21,7 @@ case class AnonymousUser () extends SessionUser {
 }
 
 case class SignedInUser (
-  user: User
+  user: UserInfo
 ) extends SessionUser {
   val signedIn = true
   

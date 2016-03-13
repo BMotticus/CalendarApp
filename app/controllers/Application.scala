@@ -64,7 +64,7 @@ class Application  @Inject() (val messagesApi: MessagesApi) extends Controller w
       }, 
       { case (email,pass1,pass2) =>
         val userId = bm.usersM.createUser(UserData.apply(email,pass1,pass2))
-        val userSession = session.SignedInUser.apply((models.User(userId,email)))
+        val userSession = session.SignedInUser.apply((models.UserInfo(userId,email)))
         Redirect(routes.Dashboard.userInfo(userId)).withSession(userSession.data.toList: _*)
       
       }

@@ -2,7 +2,7 @@ package modules
 
 import mysql._
 import com.gravitydev.scoop._, query._
-import org.joda.time.DateTime
+import java.time.Instant
 import play.api.Play.current
 import play.api.db.DB
 import java.sql.Connection
@@ -19,13 +19,13 @@ class UsersModule(protected val ctx: Context) extends ContextOps{
         .values(
           u.email     := user.email,
           u.password  := user.password1,
-          u.created_date := DateTime.now
+          u.created_date := Instant.now
         )().get
       }
     }
   }
   
-  def findUserById(userId: Long): models.User = {
+  def findUserById(userId: Long): models.UserInfo = {
     DB.withTransaction{implicit conn =>
       using (tables.users) {u => 
          from(u)
@@ -45,13 +45,13 @@ class UsersModule(protected val ctx: Context) extends ContextOps{
             m.description := Option(data.about).filter(_.nonEmpty),
             m.message := data.message,
             m.respond_info := Option(data.respond).filter(_.nonEmpty),
-            m.sent_date := DateTime.now 
+            m.sent_date := Instant.now 
           )().get
       }
     }
   }
   
-  def checkSignInCredentails(email: String,password: String): Option[models.User] = {
+  def checkSignInCredentails(email: String,password: String): Option[models.UserInfo] = {
     DB.withTransaction{ implicit conn => 
       using (tables.users) {u => 
         from(u)

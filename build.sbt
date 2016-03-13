@@ -53,10 +53,14 @@ lazy val core = Project("core",  file("core"))
     scoopJdbcPassword := "",
     scoopMapType := {(tpe: Int) =>
       tpe match {
-        case java.sql.Types.TIMESTAMP => "org.joda.time.DateTime"
-        case java.sql.Types.DATE => "org.joda.time.LocalDate"
+        case java.sql.Types.TIMESTAMP => "java.time.Instant"
+        case java.sql.Types.DATE => "java.time.LocalDate"
         case x => scoopMapType.value(x)	
       }
+    },
+    scoopOverrideColumnType := {
+      case ("users", "deleted")               => "Boolean"
+      case ("messages", "deleted")               => "Boolean"
     }
   )
 
