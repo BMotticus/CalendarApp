@@ -1,17 +1,23 @@
 package mysql
 
 import com.gravitydev.scoop._, query._
-import org.joda.time._
+import java.time._
+import scala.language.postfixOps
 
 object `package` {
 
-  implicit object dateTime  extends SqlCustomType [DateTime, java.sql.Timestamp] (
-    d => new DateTime(d.getTime), 
-    d => new java.sql.Timestamp(d.getMillis)
+  implicit object dateTimeF  extends SqlCustomType [Instant, java.sql.Timestamp] (
+    d => d.toInstant, 
+    d => new java.sql.Timestamp(d.toEpochMilli)
   )
-  implicit object localDate extends SqlCustomType [LocalDate, java.sql.Date] (
-    d => LocalDate.fromDateFields(d), 
-    d => new java.sql.Date(d.toDate.getTime)
+  implicit object localDateF extends SqlCustomType [LocalDate, java.sql.Date] (
+    d => d.toLocalDate, 
+    d => java.sql.Date.valueOf(d)
   )
   
+  implicit  object zoneIdF extends  SqlCustomType [ZoneId, String] (
+    d => ZoneId.of(d),
+    d => d.toString
+  )
+
 }

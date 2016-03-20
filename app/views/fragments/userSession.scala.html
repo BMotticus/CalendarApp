@@ -1,11 +1,10 @@
 @import session.{SessionUser, SignedInUser}
-@import controllers.routes
 @import play.api.mvc.Request
 @import controllers.{AuthRequest, routes}
 
 @(sessionUser: SessionUser)(implicit r: AuthRequest[_], m: Messages)
 @{sessionUser match {
-  case su @ SignedInUser(user) => {
+  case su @ SignedInUser(user,store,account) => {
     <span>
       <b>{user.email}</b><br/> 
       You are signed in. [<a href={routes.Application.signOut.url}>Sign Out</a>]

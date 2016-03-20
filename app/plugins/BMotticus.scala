@@ -18,6 +18,8 @@ class BMotticus  @Inject() (implicit val app: Application) extends BMPlugin with
   lazy val oAuthConfigs = new OAuthConfiguration(config.getObject("google.client_id.json.web").get)
   
   lazy val usersM = new modules.UsersModule(ctx)
+  lazy val accountsM = new modules.AccountsModule(ctx)
+  lazy val storeM = new modules.StoreModule(ctx)
   
   lazy val googleAuth = new modules.GoogleOAuthClient(
     WS.client(app),

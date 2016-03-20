@@ -1,0 +1,31 @@
+# Routes
+# ~~~~
+# Home page
+GET             /                                                            @controllers.Application.index
+GET             /signUp                                                      @controllers.Application.signUp
+POST            /signUp                                                      @controllers.Application.doSignUp
+GET             /tutorials                                                   @controllers.Application.tutorials
+GET             /contact                                                     @controllers.Application.contact
+POST            /contact                                                     @controllers.Application.doContact
+GET             /confirmation                                                @controllers.Application.thankYou(confirm: Long ?= 0L, message: String ?= "", title: String ?= "", tab: String ?= "")
+GET             /news                                                        @controllers.Application.news
+GET             /signIn                                                      @controllers.Application.signIn(path: String ?= "")
+POST            /signIn                                                      @controllers.Application.doSignIn
+GET             /signOut                                                     @controllers.Application.signOut
+
+GET             /dashboard/:userId                                           @controllers.Dashboard.index(userId: Long)
+GET             /dashboard/:userId/userInfo                                  @controllers.Dashboard.userInfo(userId: Long)
+GET             /dashboard/:userId/calendars                                 @controllers.Dashboard.calendars(userId: Long)
+GET             /dashboard/:userId/calendar                                  @controllers.Dashboard.calendar(userId: Long)
+GET             /dashboard/:userId/schedules                                 @controllers.Dashboard.schedules(userId: Long)
+GET             /dashboard/:userId/messageBoard                              @controllers.Dashboard.messageBoard(userId:Long)     
+GET             /dashboard/:userId/contacts                                  @controllers.Dashboard.contacts(userId:Long)
+
+GET             /dashboard/:userId/clientSignIn                              @controllers.Dashboard.clientSignIn(userId: Long, redirectUrl: String ?= "")
+POST            /clientRedirect                                              @controllers.OAuth.clientRedirect
+
+# Map static resources from the /public folder to the /assets URL path
+GET             /assets/*file                                                @controllers.Assets.versioned(path="/public", file: Asset)
+
+GET             /assets/*file                                                @controllers.Assets.at(path="/public", file)
+

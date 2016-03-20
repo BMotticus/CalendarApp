@@ -70,7 +70,7 @@ trait AuthRequestHeader extends RequestHeader {
   def user = signedInUser.user
   lazy val usersM = plugins.BMotticusContext.bm.usersM
   lazy val googleAuth = plugins.BMotticusContext.bm.googleAuth
-  
+  lazy val accountsM = plugins.BMotticusContext.bm.accountsM
 }
 
 class AuthRequest [T](

@@ -1,26 +1,28 @@
 package models
 import play.api.libs.json._
-case class User (
+import java.time.Instant
+
+case class User(
+  id: Long,
+  accountId: Long,
+  email: String,
+  firstName: Option[String],
+  lastName: Option[String],
+  role: String,
+  storeId: Long,
+  createdDate: Instant,
+  settings: String
+)
+
+case class UserInfo (
   id: Long,
   email: String
 )
 
-case class UserData(
-  email: String,
-  password1: String,
-  password2: String
-)  
 
-case class ContactData(
-  sender: String,
-  about: String,
-  message: String,
-  respond: String
-)
-
-case class SignInData(email: String, password:String)
-
+/*
 case class ClientConfig(
   web: JsValue
 )
 
+ */
