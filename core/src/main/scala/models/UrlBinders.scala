@@ -26,6 +26,25 @@ object UrlBinders {
     }
   }
   
+  implicit def zonedDateTimeBinder = new QueryStringBindable[ZonedDateTime] {
+    def bind(key: String, params: Map[String, Seq[String]]): Option[Either[String, ZonedDateTime]] = {
+      params.get(key).flatMap(_.headOption).map { s:String =>
+        try {
+          val formatted = DateTimeFormatter.ISO_ZONED_DATE_TIME.parse(s)
+          //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+          //return formatter.format(ZonedDateTime.ofInstant(instant, ZoneId.systemDefault()));
+          Right(ZonedDateTime.from(formatted))
+        } catch {
+          case e: NumberFormatException => Left("Failed to parse parameter " + key + " as Instant: " + e.getMessage)
+        }
+      }
+    }
+
+    def unbind(key: String, value: ZonedDateTime): String = {
+      key + "=" + URLEncoder.encode(DateTimeFormatter.ISO_ZONED_DATE_TIME.format(value), "utf-8")
+    }
+  }
+  
   implicit def localDateBinder = new QueryStringBindable[LocalDate] {
     def bind(key: String, params: Map[String, Seq[String]]) = {
       params.get(key).flatMap(_.headOption).map { s: String =>
@@ -55,7 +74,7 @@ object UrlBinders {
 
 object WebBinders {
   
-  class Path[A, B: PathBindable](parse: A => B, serialize: B => Either[String, A]) 
+  class UrlPath[A, B: PathBindable](parse: A => B, serialize: B => Either[String, A]) 
   extends PathBindable[A] { val bindable = implicitly[PathBindable[B]]
     override def bind(key: String, value: String): Either[String, A] = 
     for {
@@ -66,7 +85,7 @@ object WebBinders {
     override def unbind(key: String, value: A): String = bindable.unbind(key, parse(value))
   }
 
-  class Query[A, B: QueryStringBindable](to: A => B, serialize: B => Either[String, A]) 
+  class QueryString[A, B: QueryStringBindable](to: A => B, serialize: B => Either[String, A]) 
     extends QueryStringBindable[A] { val bindable = implicitly[QueryStringBindable[B]]
     override def bind(key: String, params: Map[String, Seq[String]]): Option[Either[String, A]] =
       bindable.bind(key, params) map { res =>

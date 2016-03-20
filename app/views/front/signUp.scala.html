@@ -19,6 +19,13 @@
     
     @helper.form(routes.Application.doSignUp()){
       @helper.inputText(
+        f("companyName"),
+        '_label -> "Company Name",
+        'class -> "control",
+        'type -> "text",
+        '_showConstraints -> false
+      )
+      @helper.inputText(
         f("email"), 
         '_label -> "Email Address", 
         'class -> "control", 
@@ -38,10 +45,18 @@
         'class -> "control",
         '_showConstraints -> false 
       )
+      <input type="hidden" name="timezone" id="timezone" value="" />
       @fragments.submitAndCancel(routes.Application.index())
       
     }
     
   </section>
-
+  <script>
+    document.onload = getTimeZoneOffset();
+    function getTimeZoneOffset() {
+      var d = new Date();
+      var n = d.getTimezoneOffset();
+      document.getElementById("timezone").value = n / 60;
+    }
+  </script>
 }

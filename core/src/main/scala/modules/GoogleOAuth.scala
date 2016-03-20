@@ -88,10 +88,8 @@ class GoogleOAuthClient (
     calendarAPI(oAuth.apiEndPoint, token, returnTo, oAuth.calendarUrl).map{ res =>
       if(res.status == 200){
         logger.debug("Successful call to Google OAuth, message: " + res)
-        println(("*" * 100) + "Success, message: " + res + ("*" * 100))
       } else {
         logger.error(res.statusText, "Google OAuth status: " + res.status + " message: " + res.body.toString)
-        println(("*" * 100) + "Google OAuth status: " + res.status + " message: " + res.body.toString + ("*" * 100))
       }
       res
     }
@@ -116,8 +114,7 @@ class GoogleOAuthClient (
 class OAuthConfiguration(clientConf: ConfigObject){
   
   val loginEndPoint = "https://www.googleapis.com/auth/plus.login"
-  //val authCodeEndPoint = "https://accounts.google.com/o/oauth2/v2/auth"
-  //val tokenEndpoint = "https://www.googleapis.com/oauth2/v4/token"
+
   val apiEndPoint = "https://www.googleapis.com/drive/v2/files"
   
   val calendarUrl = "https://www.googleapis.com/auth/calendar"
@@ -143,4 +140,9 @@ class OAuthConfiguration(clientConf: ConfigObject){
   def scope(scope: String) = "scope" -> scope
   def code(code: String) = "code" -> code
   def state(state:String) = "state" -> state
-} 
+}
+
+//val authCodeEndPoint = "https://accounts.google.com/o/oauth2/v2/auth"
+//val tokenEndpoint = "https://www.googleapis.com/oauth2/v4/token"
+//println(("*" * 100) + "Success, message: " + res + ("*" * 100))
+//println(("*" * 100) + "Google OAuth status: " + res.status + " message: " + res.body.toString + ("*" * 100))

@@ -4,18 +4,21 @@ import javax.inject.Inject
 
 import models._
 import play.api.i18n.{I18nSupport, MessagesApi}
+
 import scala.language.postfixOps
 import play.api._
 import play.api.mvc._
 import play.api.libs.json
 import play.api.libs.concurrent.Akka
 import play.api.Play.current
-import play.api.data._, Forms._
+import play.api.data._
+import Forms._
 import org.joda.time._
 import play.api.data.validation.Constraints._
 import play.api.data.Form
-import play.api.data.format.Formats._ 
+import play.api.data.format.Formats._
 import play.api.libs.concurrent.Execution.Implicits._
+import java.time.{ZoneId, ZoneOffset}
 
 class Application  @Inject() (val messagesApi: MessagesApi) extends Controller with BaseController with I18nSupport  {
   
@@ -28,13 +31,15 @@ class Application  @Inject() (val messagesApi: MessagesApi) extends Controller w
     )(ContactData.apply)(ContactData.unapply)
   )
   
-  val userForm = Form(
+  val signUpForm = Form(
     tuple(
+      "companyName" -> nonEmptyText,
       "email" -> email,
       "password1" -> nonEmptyText,
-      "password2" -> text
+      "password2" -> text,
+      "timezone" -> text
     ).verifying("Passwords Don't Match!",f => f match {
-      case (e,p1,p2) => p1 == p2
+      case (cn,e,p1,p2,tz) => p1 == p2
       })
   )  
   
@@ -53,20 +58,19 @@ class Application  @Inject() (val messagesApi: MessagesApi) extends Controller w
   
   def signUp = Action { implicit r =>
     Ok{
-    views.html.front.signUp(userForm.fill("","",""))
+    views.html.front.signUp(signUpForm.fill("","","","",""))
     }
   }
   
   def doSignUp() = Action { implicit r =>
-    userForm.bindFromRequest.fold(
+    signUpForm.bindFromRequest.fold(
       f => {
         BadRequest(views.html.front.signUp(f.withGlobalError("Sign up failed.")))
       }, 
-      { case (email,pass1,pass2) =>
-        val userId = bm.usersM.createUser(UserData.apply(email,pass1,pass2))
-        val userSession = session.SignedInUser.apply((models.UserInfo(userId,email)))
-        Redirect(routes.Dashboard.userInfo(userId)).withSession(userSession.data.toList: _*)
-      
+      { case (cn,e,p1,p2,tz) =>
+        val timezone = ZoneId.of(ZoneOffset.ofHours(tz.toInt).getId)
+        val userSession = bm.accountsM.createAccount(SignUpData.apply(cn,e,p1,timezone))
+        Redirect(routes.Dashboard.userInfo(userSession.user.id)).withSession(userSession.data.toList: _*)
       }
     )
   }

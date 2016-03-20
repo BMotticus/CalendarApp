@@ -61,6 +61,7 @@ lazy val core = Project("core",  file("core"))
     scoopOverrideColumnType := {
       case ("users", "deleted")               => "Boolean"
       case ("messages", "deleted")               => "Boolean"
+      case ("stores", "timezone")               => "java.time.ZoneId"
     }
   )
 

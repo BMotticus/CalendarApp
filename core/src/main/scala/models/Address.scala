@@ -5,6 +5,6 @@ case class Address(
   address: String,
   city: String,
   state: String,
-  county: String,
+  country: String,
   postalCode: String
 )
