@@ -24,7 +24,16 @@ class StoreModule (protected val ctx: Context) extends ContextOps{
           )().get
       }
     }
-    
-    
   }
+  
+  def byUserId(userId: Long) = DB.withConnection{ implicit conn =>
+    using(tables.`users`, tables.`stores`){(u,s) =>
+      from(s)
+        .innerJoin(u on u.store_id === s.id)
+        .where(u.id === userId)
+        .find(Parsers.store(s))
+        .headOption
+    }
+  }
+  
 }

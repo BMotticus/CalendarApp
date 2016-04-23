@@ -20,6 +20,7 @@ GET             /dashboard/:userId/calendar                                  @co
 GET             /dashboard/:userId/schedules                                 @controllers.Dashboard.schedules(userId: Long)
 GET             /dashboard/:userId/messageBoard                              @controllers.Dashboard.messageBoard(userId:Long)     
 GET             /dashboard/:userId/contacts                                  @controllers.Dashboard.contacts(userId:Long)
+GET             /dashboard/:userId/updateInfo                                @controllers.Dashboard.updateInfo(userId:Long, storeId:Long)
 
 GET             /dashboard/:userId/clientSignIn                              @controllers.Dashboard.clientSignIn(userId: Long, redirectUrl: String ?= "")
 POST            /clientRedirect                                              @controllers.OAuth.clientRedirect

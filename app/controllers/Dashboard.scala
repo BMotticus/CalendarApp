@@ -16,9 +16,18 @@ class Dashboard  @Inject() (val messagesApi: MessagesApi) extends Controller wit
   }
 
   def userInfo(userId: Long) = AuthAction { implicit r =>
+    val user = bm.userM.byId(userId)
+    val store = bm.storeM.byUserId(userId)
+    
+    Ok{
+      views.html.dashboard.userInfo(user, store)
+    }
+  }
+  
+  def updateInfo(userId: Long, storeId: Long) = AuthAction {implicit r =>
     val user = bm.usersM.findUserById(userId)
     Ok{
-      views.html.dashboard.userInfo(user)
+      views.html.dashboard.updateInfo()
     }
   }
   
