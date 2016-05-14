@@ -14,15 +14,33 @@ object OAuth {
 
 class OAuth @Inject() (val messagesApi: MessagesApi) extends Controller with BaseController with I18nSupport {
 
-  def clientSignIn (redirectUrl: String) = AuthAction { implicit r =>
+  def clientSignIn (redirectUrl: String) = AuthAction.async { implicit r =>
     //look for the access token in the user's session
     r.session.get(OAuth.tokenKey) match {
       case Some(token) =>
         val url = if(redirectUrl == "") routes.Dashboard.calendar().absoluteURL() else redirectUrl
-        bm.googleAuth.getResources(url, token)
-        Ok
-      case None =>
-        Redirect(bm.googleAuth.getAuthorizationCode(routes.OAuth.clientRedirect().url))
+        val responseF = bm.googleAuth.getResources(token)
+        println(responseF)
+        for{
+          response <- responseF
+        } yield {
+          Ok(views.html.clientRedirect(response))
+        }
+        
+      case None => {  
+        val responseF = bm.googleAuth.getAuthorizationCode()
+        println(responseF)
+        for{
+          response <- responseF
+        } yield {
+          (response.json \ "access_token").validate[String].fold(
+            _ => InternalServerError,
+            token => {
+          Ok(views.html.clientSignIn(response))
+            }
+          )
+        }
+      } 
     }
   }
   
@@ -37,7 +55,24 @@ class OAuth @Inject() (val messagesApi: MessagesApi) extends Controller with Bas
             _ => InternalServerError,
             token => {
               println(response)
+              val resF = bm.googleAuth.getResources(token)
+              for{
+                res <- resF
+              } yield {
+                println(res)
+                Ok{views.html.clientRedirect(res)}
+              }
               Redirect(routes.Dashboard.index()).addingToSession(OAuth.tokenKey -> token)
+              //Ok(views.html.clientRedirect(response)).addingToSession(OAuth.tokenKey -> token)
+              /**
+              val responseF = bm.googleAuth.getResources(routes.OAuth.clientRedirect().url, token)
+              println(responseF)
+              for{
+                response <- responseF
+              } yield {
+                Ok(views.html.clientSignIn(response))
+              }
+                */
             }
           )
         }

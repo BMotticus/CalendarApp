@@ -28,17 +28,32 @@ class GoogleOAuthClient (
 
   /**
     * STEP 1: make url to get authorization_code 
-    * @param returnTo URL that called the web service
     * @return authorization code used to get access token
     */
-  def getAuthorizationCode(returnTo: String): String = {
-    makeUrl(oAuth.getAuthUri,
-      oAuth.responseType,
-      oAuth.clientId,
-      oAuth.redirectUri,
-      "scope" -> oAuth.loginEndPoint,
-      "state" -> returnTo
-    )
+  def getAuthorizationCode(): Future[WSResponse] = {
+    // https://accounts.google.com/o/oauth2/auth?
+    // redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground
+    // &response_type=code&
+    // client_id=407408718192.apps.googleusercontent.com&
+    // scope=&
+    // approval_prompt=force&
+    // access_type=offline
+    ws.url("https://accounts.google.com/o/oauth2/auth")
+      .withRequestTimeout(timeout)
+      .withQueryString(
+        oAuth.scope("email profile"),//s"${oAuth.calendarUrl} ${oAuth.calendarReadOnlyUrl}"
+        oAuth.redirectUri,
+        oAuth.responseType,
+        oAuth.clientId,
+        oAuth.clientSecret,
+        oAuth.promptConsent
+        /*,
+        oAuth.approvalForce,
+        oAuth.accessTypeOffline
+        */
+        //"scope" -> s"${oAuth.calendarUrl} ${oAuth.calendarReadOnlyUrl}", //oAuth.loginEndPoint
+        //"state" -> returnTo
+      ).get()
   }
 
   /**
@@ -75,17 +90,16 @@ class GoogleOAuthClient (
   def getAccessToken(code: String): Future[WSResponse] = {
     ws.url(oAuth.getTokenUri)
       .withRequestTimeout(timeout)
-      .withQueryString(oAuth.code(code), oAuth.clientId, oAuth.clientSecret, oAuth.redirectUri, oAuth.grantType).get()
+      .withQueryString("key" -> apiKey, oAuth.code(code), oAuth.clientId, oAuth.clientSecret, oAuth.redirectUri, oAuth.grantType).get()
   }
 
   /**
     * Calling Google's API After receiving Access token
     * @param token access token
-    * @param returnTo returnTo URL
     * @return
     */
-  def getResources(token: String, returnTo: String): Future[WSResponse] = {
-    calendarAPI(oAuth.apiEndPoint, token, returnTo, oAuth.calendarUrl).map{ res =>
+  def getResources(token: String): Future[WSResponse] = {
+    calendarAPI(oAuth.calendarUrl, token, "https://localhost:9000/clientRedirect", oAuth.calendarUrl).map{ res =>
       if(res.status == 200){
         println("Successful call to Google OAuth, message: " + res)
       } else {
@@ -122,8 +136,9 @@ class OAuthConfiguration(clientConf: ConfigObject){
   
   //secure callback url
   val redirectUri = "redirect_uri" -> "https://localhost:9000/clientRedirect"
-  
-  val prompt = "prompt" -> "consent select_account"
+  val approvalForce = "approval_prompt" -> "force"
+  val accessTypeOffline = "access_type" -> "offline"
+  val promptConsent = "prompt" -> "consent select_account"
   val responseType = "response_type" -> "code"
   val grantType = "grant_type" -> "authorization_code"
   
