@@ -115,10 +115,10 @@
                     <ul class="nav navbar-nav">
                     @{
                       val links = List(
-                        "dashboard" -> routes.Dashboard.index(r.signedInUser.user.id).url -> "Dashboard",
-                        "schedules" -> routes.Dashboard.schedules(r.signedInUser.user.id).url -> "Schedules",
-                        "messageBoard" -> routes.Dashboard.messageBoard(r.signedInUser.user.id).url -> "Message Board",
-                        "contacts" -> routes.Dashboard.contacts(r.signedInUser.user.id).url -> "Contacts"
+                        "dashboard" -> routes.Dashboard.index().url -> "Dashboard",
+                        "schedules" -> routes.Dashboard.schedules().url -> "Schedules",
+                        "messageBoard" -> routes.Dashboard.messageBoard().url -> "Message Board",
+                        "contacts" -> routes.Dashboard.contacts().url -> "Contacts"
                       )
 
                       {for (((k, url), label) <- links) yield

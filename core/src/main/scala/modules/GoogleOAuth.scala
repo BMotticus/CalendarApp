@@ -87,9 +87,9 @@ class GoogleOAuthClient (
   def getResources(token: String, returnTo: String): Future[WSResponse] = {
     calendarAPI(oAuth.apiEndPoint, token, returnTo, oAuth.calendarUrl).map{ res =>
       if(res.status == 200){
-        logger.debug("Successful call to Google OAuth, message: " + res)
+        println("Successful call to Google OAuth, message: " + res)
       } else {
-        logger.error(res.statusText, "Google OAuth status: " + res.status + " message: " + res.body.toString)
+        println("Failed. Google OAuth status: " + res.statusText + " message: " + res.body.toString)
       }
       res
     }
