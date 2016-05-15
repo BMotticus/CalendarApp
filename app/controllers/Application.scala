@@ -100,17 +100,17 @@ class Application  @Inject() (val messagesApi: MessagesApi) extends Controller w
   
   def thankYou(confirm: Long, message: String, title: String, tab: String) = Action {implicit r =>
     Ok{
-      views.html.front.thankYou(confirm = confirm, message = message, title = title, tab = tab)
+      views.html.front.thankYou(confirm=confirm, message=message, title=title, tab=tab)
     }
   }
 
   def news = Action { implicit r =>
     Ok(views.html.front.news())
   }
-
+  
   def signIn (path: String) = Action { implicit r =>
     Ok{
-      views.html.front.signIn(path, signInForm.fill(SignInData("","")))
+      views.html.front.signIn( path, signInForm.fill(SignInData("","")), bm.googleAuth.clientId )
     }
   }
   

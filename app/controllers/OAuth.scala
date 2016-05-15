@@ -13,34 +13,54 @@ object OAuth {
 }
 
 class OAuth @Inject() (val messagesApi: MessagesApi) extends Controller with BaseController with I18nSupport {
-
+  //TODO: Question - Do I need this and controllers.Application.signIn()?
   def clientSignIn (redirectUrl: String) = AuthAction.async { implicit r =>
     //look for the access token in the user's session
     r.session.get(OAuth.tokenKey) match {
       case Some(token) =>
         val url = if(redirectUrl == "") routes.Dashboard.calendar().absoluteURL() else redirectUrl
-        val responseF = bm.googleAuth.getResources(token)
-        println(responseF)
+        val responseF = bm.googleAuth.requestResources(token)
         for{
           response <- responseF
         } yield {
+          println("Resources" + response)
           Ok(views.html.clientRedirect(response))
         }
-        
-      case None => {  
-        val responseF = bm.googleAuth.getAuthorizationCode()
-        println(responseF)
+
+      case None => {
+        val responseF = bm.googleAuth.requestAuthorizationCode()
         for{
           response <- responseF
         } yield {
-          (response.json \ "access_token").validate[String].fold(
-            _ => InternalServerError,
-            token => {
+          println("AuthCode" + response)
           Ok(views.html.clientSignIn(response))
-            }
-          )
         }
-      } 
+      }
+    }
+  }
+  
+  def clientResources(redirectUrl: String, scope: String) = AuthAction.async { implicit r =>
+    //look for the access token in the user's session
+    r.session.get(OAuth.tokenKey) match {
+      case Some(token) =>
+        val url = if(redirectUrl == "") routes.Dashboard.calendar().absoluteURL() else redirectUrl
+        val responseF = bm.googleAuth.requestResources(token)
+        for{
+          response <- responseF
+        } yield {
+          println("Resources" + response)
+          Ok(views.html.clientRedirect(response))
+        }
+
+      case None => {
+        val responseF = bm.googleAuth.requestAuthorizationCode()
+        for{
+          response <- responseF
+        } yield {
+          println("AuthCode" + response)
+          Ok(views.html.clientSignIn(response))
+        }
+      }
     }
   }
   
@@ -52,27 +72,17 @@ class OAuth @Inject() (val messagesApi: MessagesApi) extends Controller with Bas
           response <- bm.googleAuth.requestAccessToken(authCode)
         } yield {
           (response.json \ "access_token").validate[String].fold(
-            _ => InternalServerError,
+            _ => Ok(views.html.clientRedirect(response)), //InternalServerError,Ok(views.html.clientRedirect(response))
             token => {
               println(response)
-              val resF = bm.googleAuth.getResources(token)
               for{
-                res <- resF
+                res <- bm.googleAuth.requestResources(token)
               } yield {
                 println(res)
                 Ok{views.html.clientRedirect(res)}
               }
-              Redirect(routes.Dashboard.index()).addingToSession(OAuth.tokenKey -> token)
-              //Ok(views.html.clientRedirect(response)).addingToSession(OAuth.tokenKey -> token)
-              /**
-              val responseF = bm.googleAuth.getResources(routes.OAuth.clientRedirect().url, token)
-              println(responseF)
-              for{
-                response <- responseF
-              } yield {
-                Ok(views.html.clientSignIn(response))
-              }
-                */
+              //Redirect(routes.Dashboard.index()),Ok(views.html.clientRedirect(response))
+              Ok(views.html.clientRedirect(response)).addingToSession(OAuth.tokenKey -> token)
             }
           )
         }
@@ -80,5 +90,5 @@ class OAuth @Inject() (val messagesApi: MessagesApi) extends Controller with Bas
         Future.successful(InternalServerError)
     }
   }
-
+  
 }

@@ -4,7 +4,8 @@
   title: String, 
   tab: String = "", 
   styles: Seq[String] = Seq.empty, 
-  scripts: Seq[String] = Seq.empty
+  scripts: Seq[String] = Seq.empty,
+  metaData: Seq[(String, String)] = Seq.empty
 )(content: Html)(implicit r: Request[_], m: Messages)
 
 <!DOCTYPE html>

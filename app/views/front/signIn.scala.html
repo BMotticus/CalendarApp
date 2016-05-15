@@ -2,39 +2,58 @@
 @import play.api.data.Form
 @import play.api.data.format.Formats._
 
-@(path: String, f: Form[_])(implicit r: Request[_], m: Messages)
+@(path: String, f: Form[_], clientId: String = "")(implicit r: Request[_], m: Messages)
 
-@layouts.front(title="Sign In", tab="signIn"){
+@layouts.front(title="Sign In", tab="signIn", metaData = Seq(("google-signin-scope", "profile email"), ("google-signin-client_id", clientId))){
 
   <section>
     <h1>Sign In</h1>
-    
-    @if(f.hasGlobalErrors) {
-      <ul style="list-style-type: none;" class="list-group-item-danger">
+    <div class="hbox flex1">
+      <div class="vbox">
+        @if(f.hasGlobalErrors) {
+          <ul style="list-style-type: none;" class="list-group-item-danger">
           @for(e <- f.globalErrors) {
-          <li>@e.message</li>
+            <li>@e.message</li>
           }
-      </ul>
-    }
-    
-    @helper.form(routes.Application.doSignIn()){
-      <input type="hidden" name="path" value="@path" />
-      @helper.inputText(
-        f("email"), 
-        '_label -> "Email", 
-        'class -> "control",
-        '_showConstraints -> false,
-        '_error -> f.globalError
-      )
-      @helper.inputPassword(
-          f("password"), 
-          '_label -> "Password",
-          'class -> "control",
-          '_showConstraints -> false 
-        )
-        @fragments.submitAndCancel(routes.Application.index(), "Sign In")
-      }
-      
+          </ul>
+        }
+
+        @helper.form(routes.Application.doSignIn()){
+          <input type="hidden" name="path" value="@path" />
+          @helper.inputText(
+            f("email"),
+            '_label -> "Email",
+            'class -> "control",
+            '_showConstraints -> false,
+            '_error -> f.globalError
+          )
+          @helper.inputPassword(
+            f("password"),
+            '_label -> "Password",
+            'class -> "control",
+            '_showConstraints -> false
+          )
+          @fragments.submitAndCancel(routes.Application.index(), "Sign In")
+        }
+      </div>
+      <div class="vbox">
+        <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+        <script>
+          function onSignIn(googleUser) {
+            // Useful data for your client-side scripts:
+            var profile = googleUser.getBasicProfile();
+            console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+            console.log("Name: " + profile.getName());
+            console.log("Image URL: " + profile.getImageUrl());
+            console.log("Email: " + profile.getEmail());
+
+            // The ID token you need to pass to your backend:
+            var id_token = googleUser.getAuthResponse().id_token;
+            console.log("ID Token: " + id_token);
+          };
+        </script>
+      </div>
+    </div> 
     </section>
   
   }
