@@ -59,9 +59,15 @@ lazy val core = Project("core",  file("core"))
       }
     },
     scoopOverrideColumnType := {
-      case ("users", "deleted")               => "Boolean"
+      case ("accounts", "id")                    => "_root_.models.AccountId"
+      case ("users", "deleted")                  => "Boolean"
+      case ("users", "id")                       => "_root_.models.UserId"
+      case ("users", "account_id")               => "_root_.models.AccountId"
+      case ("users", "store_id")                 => "_root_.models.StoreId"
       case ("messages", "deleted")               => "Boolean"
-      case ("stores", "timezone")               => "java.time.ZoneId"
+      case ("stores", "id")                      => "_root_.models.StoreId"
+      case ("stores", "account_id")              => "_root_.models.AccountId"
+      case ("stores", "timezone")                => "java.time.ZoneId"
     }
   )
 
