@@ -4,15 +4,15 @@ import java.time.Instant
 import java.time.ZoneId
 
 case class Store(
-  id: Long,
+  id: StoreId,
   name: String,
-  accountId: Long,
+  accountId: AccountId,
   address: Address,
   createdDate: Instant,
   timezone: ZoneId
 )
 
 case class StoreInfo(
-  id: Long,
+  id: StoreId,
   timezone: ZoneId
 )
