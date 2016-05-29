@@ -20,7 +20,7 @@ import play.api.data.format.Formats._
 import play.api.libs.concurrent.Execution.Implicits._
 import java.time.{ZoneId, ZoneOffset}
 
-class Application  @Inject() (val messagesApi: MessagesApi) extends Controller with BaseController with I18nSupport  {
+class Application  @Inject() (val messagesApi: MessagesApi) extends Controller with BaseController with ReactJsEngine with I18nSupport  {
   
   val contactForm = Form(
     mapping(

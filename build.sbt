@@ -10,7 +10,7 @@ import com.gravitydev.scoop.sbt.ScoopPlugin.autoImport._
 lazy val commonSettings = Seq(
   scalaVersion := "2.11.7",
   offline := true,
-  organization in ThisBuild := "io.CalendarScheduler",
+  organization in ThisBuild := "io.CalendarApp",
   resolvers ++= Seq(
     "typesafe" at "http://repo.typesafe.com/typesafe/releases/",
     Resolver.url("typesafe2", url("http://dl.bintray.com/typesafe/ivy-releases"))(Resolver.ivyStylePatterns),
@@ -41,7 +41,6 @@ lazy val core = Project("core",  file("core"))
       "com.gravitydev"             %% "trigger" % "0.1.3-SNAPSHOT",
       "com.gravitydev"             %%  "scoop"   % "1.1.0-SNAPSHOT",
       "org.scalamock"              %% "scalamock-scalatest-support" % "3.2" % "test",
-      //"com.google.api.client"       % "google-api-client" % "1.4.0-alpha",
       "com.google.api-client"       % "google-api-client" % "1.21.0",
       "com.googlecode.kiama"        % "kiama_2.11" % "2.0.0-SNAPSHOT"
     ),
@@ -80,27 +79,25 @@ lazy val root = Project("site",  file("."))
     libraryDependencies ++= Seq(
       filters,
       cache,
-      //"org.scala-lang"              % "scala-reflect" % "2.11.6",
-      //"org.slf4j"                   % "slf4j-api" % "1.7.5",
       "javax.servlet" % "servlet-api" % "2.4",
-      //"mysql"                       % "mysql-connector-java" % "5.1.36",
       //"org.mnode.ical4j"            % "ical4j" % "1.0.2",
       //"com.google.api.client"       % "google-api-client" % "1.4.0-alpha",
       "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0",
-      //"com.edulify"                %% "play-hikaricp" % "2.0.6",
       //"com.typesafe.akka"          %% "akka-actor" % "2.3.2",
       "org.scalatestplus"          %% "play" % "1.4.0" % "test",
       "org.webjars"                %% "webjars-play" % "2.4.0-1",
-      "org.webjars"                 % "bootstrap" % "3.3.5",
       "org.webjars"                 % "normalize.css" % "3.0.2",
-      "org.webjars"                 % "flat-ui"          % "bcaf2de95e",
       "org.webjars"                 % "react" % "0.13.3"
     ),
     EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Managed,
     EclipseKeys.withSource := true,
-    TwirlKeys.templateImports += "play.api.Play.current,controllers.AuthRequest", //bmotticus.BMPlugin
+    TwirlKeys.templateImports += "play.api.Play.current,controllers.AuthRequest,plugins.BMotticusContext._", //bmotticus.BMPlugin
     ReactJsKeys.harmony := true,
     ReactJsKeys.es6module := false//,
-    //routesGenerator := InjectedRoutesGenerator,
+//    routesImport += "models.QueryBinders._;",
+//    routesImport += "models.WebBinders._;",
+//    routesImport += "models.{BranchId, RegionId, PlanId, AccountId};",
+//    routesImport += "org.joda.time.DateTime;",
+//    routesImport += "org.joda.time.LocalDate;",
   )
 

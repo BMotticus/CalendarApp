@@ -74,7 +74,7 @@ object UrlBinders {
 
 object WebBinders {
   
-  class UrlPath[A, B: PathBindable](parse: A => B, serialize: B => Either[String, A]) 
+  class MappedUrlPath[A, B: PathBindable](parse: A => B, serialize: B => Either[String, A]) 
   extends PathBindable[A] { val bindable = implicitly[PathBindable[B]]
     override def bind(key: String, value: String): Either[String, A] = 
     for {
@@ -85,7 +85,7 @@ object WebBinders {
     override def unbind(key: String, value: A): String = bindable.unbind(key, parse(value))
   }
 
-  class QueryString[A, B: QueryStringBindable](to: A => B, serialize: B => Either[String, A]) 
+  class MappedQueryString[A, B: QueryStringBindable](to: A => B, serialize: B => Either[String, A]) 
     extends QueryStringBindable[A] { val bindable = implicitly[QueryStringBindable[B]]
     override def bind(key: String, params: Map[String, Seq[String]]): Option[Either[String, A]] =
       bindable.bind(key, params) map { res =>
@@ -97,7 +97,15 @@ object WebBinders {
     override def unbind(key: String, value: A): String = bindable.unbind(key, to(value))
   }
 
+  implicit val accountIdUrlPath = new MappedUrlPath[AccountId,Long](parse = _.underlying, serialize = num => Right(AccountId(num)))
+  implicit val accountIdQueryString = new MappedUrlPath[AccountId,Long](parse = _.underlying, serialize = num => Right(AccountId(num)))
 
+  implicit val storeIdUrlPath = new MappedUrlPath[StoreId,Long](parse = _.underlying, serialize = num => Right(StoreId(num)))
+  implicit val storeIdQueryString = new MappedUrlPath[StoreId,Long](parse = _.underlying, serialize = num => Right(StoreId(num)))
+
+  implicit val userIdUrlPath = new MappedUrlPath[UserId,Long](parse = _.underlying, serialize = num => Right(UserId(num)))
+  implicit val userIdQueryString = new MappedUrlPath[UserId,Long](parse = _.underlying, serialize = num => Right(UserId(num)))
+  
 }
 
 

@@ -41,6 +41,8 @@ class BMotticus  @Inject() (implicit val app: Application) extends BMPlugin with
   
 }
 
+//Context
+
 import play.api.Play.current
 
 trait BMotticusContext {

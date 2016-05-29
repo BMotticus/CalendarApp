@@ -13,10 +13,11 @@ import com.typesafe.scalalogging.StrictLogging
 import play.api.mvc._
 import play.api.http._
 import session._
+import javax.inject.{Inject, Singleton}
 
-trait BaseController extends RequestOps with ControllerOps with StrictLogging with plugins.BMotticusContext {self: Controller =>
+trait BaseController extends RequestOps with ControllerOps with plugins.BMotticusContext with StrictLogging {self: Controller =>
   def config = current.configuration
-  
+
   def bodyParamOpt (name: String)(implicit r: Request[AnyContent]) = r.body.asFormUrlEncoded.get.get(name).flatMap(_.headOption)
 
   def bodyParam (name: String)(implicit r: Request[AnyContent]) = bodyParamOpt(name).get
@@ -73,7 +74,6 @@ trait AuthRequestHeader extends RequestHeader {
   lazy val usersM = plugins.BMotticusContext.bm.usersM
   lazy val googleAuth = plugins.BMotticusContext.bm.googleAuth
   lazy val accountsM = plugins.BMotticusContext.bm.accountsM
-  def bm = plugins.BMotticusContext.bm
 }
 
 class AuthRequest [T](
@@ -93,3 +93,48 @@ trait RequestOps {
 }
 
 object RequestOps extends RequestOps
+
+trait ReactJsEngine {self: Controller =>
+  import ReactJsEngineOps._
+
+  def render (view: String, title: String)(props: (String,Json.JsValueWrapper)*)(implicit r: AuthRequestHeader): Html = {
+    jsEngine.loadScript("public/javascripts/components/Application.js")
+    jsEngine.loadScript("public/javascripts/components/Elements.js")
+    jsEngine.loadScript(s"public/javascripts/views/$view.js")
+
+    val data = Json.obj(props:_*)
+    val rendered = jsEngine.eval("React.renderToString(React.createElement(View, " + Json.stringify(data) + "));").asInstanceOf[String]
+
+    views.html.react.page(title, view, rendered, props = data)
+  }
+}
+
+object ReactJsEngineOps {
+  implicit class ScriptEngineOps (engine: javax.script.ScriptEngine) {
+    def loadScript (script: String) = {
+      val code = scala.io.Source.fromInputStream(play.api.Play.application.resourceAsStream(script).get).mkString
+      
+      val _ = engine.put("code", code)
+      val x = engine.eval(s"load({name: '${script.replace("\\/", "")}', script: code});")
+    }
+  }
+  lazy val  jsEngine = {
+    val engine = new javax.script.ScriptEngineManager(null).getEngineByName("nashorn")
+
+    val polyfill = engine.eval("""
+      var global = this; var window = global; window.matchMedia = function (qs) {return {matches: qs !== '(max-width: 700px)', addListener: function (mq) {}}}; var console = {};
+      console.debug = print;
+      console.warn = print;
+      console.log = print; 
+    """)
+
+    List(
+      "public/javascripts/lodash.min.js",
+      "public/lib/react/react.js"
+      //"public/javascripts/ux.js",
+      //"public/javascripts/components.js"
+    ).foreach (engine.loadScript)
+
+    engine
+  }
+}

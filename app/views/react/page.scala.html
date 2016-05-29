@@ -1,0 +1,4 @@
+@import play.api.libs.json.{Json, JsObject}
+@import play.api.Play.current
+
+@(title: String, script: String, content: String, props: JsObject, extraScripts: List[String] = Nil)(implicit r: AuthRequestHeader)
