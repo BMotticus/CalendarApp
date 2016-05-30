@@ -53,7 +53,19 @@ class Application  @Inject() (val messagesApi: MessagesApi) extends Controller w
   )
 
   def index = Action { implicit r =>
-    Ok(views.html.front.index("Your new application is ready."))
+    
+    Ok(
+      views.html.front.index("Your new application is ready.")
+    )
+  }
+
+  def reactIndex = Action { implicit r =>
+
+    Ok(
+      render("Home", "Home Page")(
+        "msg" -> "React Render from the Server"
+      )
+    )
   }
   
   def signUp = Action { implicit r =>

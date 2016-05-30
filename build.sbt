@@ -87,7 +87,9 @@ lazy val root = Project("site",  file("."))
       "org.scalatestplus"          %% "play" % "1.4.0" % "test",
       "org.webjars"                %% "webjars-play" % "2.4.0-1",
       "org.webjars"                 % "normalize.css" % "3.0.2",
-      "org.webjars"                 % "react" % "0.13.3"
+      "org.webjars"                 % "react" % "0.13.3",
+      "org.webjars"                 % "flat-ui"          % "bcaf2de95e",
+      "org.webjars"                 % "bootstrap" % "3.3.5"
     ),
     EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Managed,
     EclipseKeys.withSource := true,

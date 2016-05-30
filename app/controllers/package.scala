@@ -97,7 +97,7 @@ object RequestOps extends RequestOps
 trait ReactJsEngine {self: Controller =>
   import ReactJsEngineOps._
 
-  def render (view: String, title: String)(props: (String,Json.JsValueWrapper)*)(implicit r: AuthRequestHeader): Html = {
+  def render (view: String, title: String)(props: (String,Json.JsValueWrapper)*): Html = {
     jsEngine.loadScript("public/javascripts/components/Application.js")
     jsEngine.loadScript("public/javascripts/components/Elements.js")
     jsEngine.loadScript(s"public/javascripts/views/$view.js")
