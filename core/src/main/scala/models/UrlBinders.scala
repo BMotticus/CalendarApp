@@ -72,7 +72,7 @@ object UrlBinders {
   
 }
 
-object WebBinders {
+object PathBinders {
   
   class MappedUrlPath[A, B: PathBindable](parse: A => B, serialize: B => Either[String, A]) 
   extends PathBindable[A] { val bindable = implicitly[PathBindable[B]]

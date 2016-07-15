@@ -5,13 +5,14 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- TODO: Add Cache -->
       <!-- Assets folder target/web/public ;) -->
       <!-- Disables touch zooming by mobile divices 
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
       <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
       <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
       <!--[if lt IE 9]>
@@ -20,38 +21,38 @@
       <![endif]-->
       
     <title>@title - BMotticus</title>
-      
+    
     <link rel="stylesheet" href='@routes.Assets.at("lib/bootstrap/css/bootstrap.min.css")'> <!-- Bootstrap -->
     <link rel='stylesheet' href='@routes.Assets.at(s"stylesheets/views/$script.css")' type='text/css'/><!-- React View CSS -->
-    <link rel="stylesheet" href='@routes.Assets.at("lib/normalize.css/normalize.css")'> <!-- normalize CSS -->
-    <link href="@routes.Assets.versioned("lib/flat-ui/css/flat-ui.css")" rel="stylesheet"> <!-- flat ui CSS -->
     <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")"><!-- Compiled LESS -->
-    <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("../../../public/images/favicon.png")">
-    
+    <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
     <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.fullPath("react", "react.js"))'></script>
   </head>
   <body>
-    <div id='react-container' style='height: 100%'>@Html(content)</div>
+    <div id='app-container' style='height: 100%'>
+      @Html(content)
+    </div>
     
-    <script type="text/javascript" src="@routes.Assets.at("javascripts/app.js")"></script><!-- React.js -->
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/components/Application.js")"></script><!-- React.js -->
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/components/Elements.js")"></script><!-- React.js -->
+    
     @for(s <- extraScripts) {
-      <script type='text/javascript' src='@routes.Assets.at(s"javascripts/components/$s.js")'></script> <!-- React Components -->
+      <script type='text/javascript' src='@routes.Assets.at(s"javascripts/components/$s.js")'></script> <!-- Extra Scripts -->
     }
-    <script type='text/javascript' src='@routes.Assets.at(s"javascripts/views/$script.js")'></script><!-- React.js File TODO: Add Cacher -->
+    
+    <script type='text/javascript' src='@routes.Assets.at(s"javascripts/views/$script.js")'></script><!-- React.js File -->
     <script>
       React.render(
         React.createElement(View, @Html(Json.stringify(props))),
-        document.getElementById('react-container')
+        document.getElementById('app-container')
       )
     </script>
 
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <!--Use for Google+ login "https://apis.google.com/js/platform.js" async defer -->
 
-    <script type='text/javascript' src='@routes.Assets.at("lib/react/react.js")'></script><!-- React.js -->
-    <script type='text/javascript' src='@routes.Assets.at("lib/react/JSXTransformer.js")'></script><!-- React.js -->
     <script type="text/javascript" src='@routes.Assets.at("lib/jquery/jquery.min.js")'></script><!-- jQuery.js -->
     <script type="text/javascript" src='@routes.Assets.at("lib/bootstrap/js/bootstrap.min.js")'></script> <!-- Bootstrap -->
-    <script type='text/javascript' src='@routes.Assets.versioned("../../../public/javascripts/flat-ui.min.js")'></script>
+    <script type='text/javascript' src='@routes.Assets.versioned("javascripts/lodash.min.js")'></script>
     
 
   </body>

@@ -75,6 +75,8 @@ lazy val root = Project("site",  file("."))
   .enablePlugins(PlayScala,SbtWeb)
   .settings(commonSettings: _*)
   .settings(  
+    routesImport += "models.UrlBinders._",
+    routesImport += "models.PathBinders._",
     offline := true,
     libraryDependencies ++= Seq(
       filters,
@@ -86,19 +88,15 @@ lazy val root = Project("site",  file("."))
       //"com.typesafe.akka"          %% "akka-actor" % "2.3.2",
       "org.scalatestplus"          %% "play" % "1.4.0" % "test",
       "org.webjars"                %% "webjars-play" % "2.4.0-1",
-      "org.webjars"                 % "normalize.css" % "3.0.2",
       "org.webjars"                 % "react" % "0.13.3",
-      "org.webjars"                 % "flat-ui"          % "bcaf2de95e",
       "org.webjars"                 % "bootstrap" % "3.3.5"
     ),
     EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Managed,
     EclipseKeys.withSource := true,
-    TwirlKeys.templateImports += "play.api.Play.current,controllers.AuthRequest,plugins.BMotticusContext._", //bmotticus.BMPlugin
+    TwirlKeys.templateImports += "play.api.Play.current,controllers.AuthRequest,context.BMotticusContext._",
     ReactJsKeys.harmony := true,
     ReactJsKeys.es6module := false//,
-//    routesImport += "models.QueryBinders._;",
-//    routesImport += "models.WebBinders._;",
-//    routesImport += "models.{BranchId, RegionId, PlanId, AccountId};",
+//    routesImport += "models.{BranchId, RegionId, AccountId};",
 //    routesImport += "org.joda.time.DateTime;",
 //    routesImport += "org.joda.time.LocalDate;",
   )

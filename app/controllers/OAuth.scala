@@ -8,6 +8,7 @@ import play.api.mvc.{RequestHeader, Call, Action, Controller}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import scala.concurrent.Future
 
+
 object OAuth {
   val tokenKey = "oauth-token"
 }

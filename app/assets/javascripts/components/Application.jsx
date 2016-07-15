@@ -1,5 +1,6 @@
 "use strict";
 
+//AppContainer should hold the session state
 class AppContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -20,7 +21,7 @@ class App extends React.Component {
   }
 }
 
-class MainMenu extends React.Component {
+class NavBar extends React.Component {
   constructor(props) {
     super(props);
   }

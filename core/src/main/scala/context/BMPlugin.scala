@@ -1,9 +1,10 @@
-package plugins
+package context
 
 import com.typesafe.scalalogging.StrictLogging
 import play.api.libs.concurrent.Execution
 import play.api.{Application, Plugin}
 
+//TODO: Use play.api.inject.module
 trait BMPlugin extends Plugin with StrictLogging {
   implicit val app: Application
 

@@ -1,5 +1,6 @@
 "use strict";
 
+//TODO: Build Layout
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -17,9 +18,9 @@ class View extends React.Component {
 
   render() {
     return ( 
-      <AppContainer>
-        
-      </AppContainer>  
+      <div>
+        <h1>{this.props.msg}</h1>
+      </div>  
     );
   }
 }
