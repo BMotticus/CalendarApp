@@ -19,11 +19,6 @@ class AccountsModule (protected val ctx: Context) extends ContextOps{
     val accountId = insertAccount(signUpData.companyName, address)
     val storeId = insertStore(accountId, signUpData.timezone)
     val userId = insertUser(accountId, storeId, signUpData)
-//    val (accountId, storeId, userId) = for{
-//      accountId <- insertAccount(signUpData.companyName, address)
-//      storeId <- insertStore(accountId, signUpData.timezone)
-//      userId <- insertUser(accountId, storeId, signUpData)
-//    } yield (accountId, storeId, userId)
     SignedInUser(
       UserInfo(userId, signUpData.email),
       StoreInfo(storeId, signUpData.timezone),
@@ -31,7 +26,7 @@ class AccountsModule (protected val ctx: Context) extends ContextOps{
     )
   }
   
-  def insertAccount(companyName: String, address: Address) = {
+  def insertAccount(companyName: String, address: Address):AccountId = {
     DB.withConnection{ implicit conn =>
       using(tables.accounts){a =>
         insertInto(a)
@@ -43,12 +38,12 @@ class AccountsModule (protected val ctx: Context) extends ContextOps{
             a.country    := address.country,
             a.postal_code := address.postalCode,
             a.created_date := Instant.now
-          )().get
+          )().map(AccountId(_)).get
       }
     }
   }
 
-  def insertStore(accountId: Long, timezone: ZoneId):Long = {
+  def insertStore(accountId: AccountId, timezone: ZoneId):StoreId = {
     DB.withConnection { implicit conn =>
       using(tables.stores) { s =>
         insertInto(s)
@@ -57,12 +52,12 @@ class AccountsModule (protected val ctx: Context) extends ContextOps{
             s.account_id := accountId,
             s.created_date := Instant.now,
             s.timezone := timezone
-          )().get
+          )().map(StoreId(_)).get
       }
     }
   }
   
-  def insertUser(accountId: Long, storeId: Long, signUpData: SignUpData):Long = {
+  def insertUser(accountId: AccountId, storeId: StoreId, signUpData: SignUpData):UserId = {
     DB.withConnection { implicit conn =>
       using(tables.users) { u =>
         insertInto(u)
@@ -74,7 +69,7 @@ class AccountsModule (protected val ctx: Context) extends ContextOps{
             u.created_date := Instant.now,
             u.deleted := false,
             u.role := "ADMIN"
-          )().get
+          )().map(UserId(_)).get
       }
     }
   }

@@ -11,7 +11,7 @@ import models._
 
 class UsersModule(protected val ctx: Context) extends ContextOps{
   
-  def createUser(accountId: Long, storeId: Long, email: String, password: String, role: String): Long = {
+  def createUser(accountId: AccountId, storeId: StoreId, email: String, password: String, role: String): Long = {
     DB.withConnection{ implicit conn =>
       using(tables.users) { u =>
         insertInto(u)
@@ -28,7 +28,7 @@ class UsersModule(protected val ctx: Context) extends ContextOps{
     }
   }
   
-  def findUserById(userId: Long): models.UserInfo = {
+  def findUserById(userId: UserId): models.UserInfo = {
     DB.withTransaction{implicit conn =>
       using (tables.users) {u => 
          from(u)

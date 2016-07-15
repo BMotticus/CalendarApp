@@ -1,10 +1,11 @@
-@import _root_.session._
+@import _root_.session.{AnonymousUser,SessionUser}
 @import models._
 @(
   title: String, 
   tab: String = "", 
   styles: Seq[String] = Seq.empty, 
-  scripts: Seq[String] = Seq.empty
+  scripts: Seq[String] = Seq.empty,
+  metaData: Seq[(String, String)] = Seq.empty
 )(content: Html)(implicit r: Request[_], m: Messages)
 
 <!DOCTYPE html>
@@ -107,9 +108,6 @@
                     </div>
                   </form>
                 </li>
-                <li>
-                  @*{fragments.userSession(SessionUser.parse(r.session.data).getOrElse(new AnonymousUser))}*@
-                </li>
               </ul>
               <div style="max-width:700px; margin: 0 auto;">  
                 <ul class="nav navbar-nav">
@@ -119,7 +117,8 @@
                       "tutorials" -> routes.Application.tutorials().url -> "Tutorials",
                       "news" -> routes.Application.news().url -> "New Features",
                       "contact" -> routes.Application.contact().url -> "Contact Us",
-                      "register" -> routes.Application.signUp().url -> "Registration"
+                      "register" -> routes.Application.signUp().url -> "Registration",
+                      "signIn" -> routes.Application.signIn().url -> "Sign In"
                     )
                     
                     {for (((k, url), label) <- links) yield

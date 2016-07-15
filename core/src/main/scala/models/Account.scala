@@ -3,7 +3,7 @@ package models
 import java.time.Instant
 
 case class Account(
-  id: Long,
+  id: AccountId,
   name: String,
   phone: Option[String],
   address: Address,
@@ -13,6 +13,6 @@ case class Account(
 )
 
 case class AccountInfo(
-  id: Long,
+  id: AccountId,
   name: String
 )

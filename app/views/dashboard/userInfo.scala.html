@@ -1,14 +1,20 @@
-@(user: models.UserInfo)(implicit r: AuthRequest[_], m: Messages)
 
-@layouts.front(title="User Info",tab="dashboard"){
+
+@(userOpt: Option[models.User], storeOpt: Option[models.Store])(implicit r: AuthRequest[_], m: Messages)
+
+@layouts.dashboard(title="User Info",tab="dashboard"){
 
   <section>
     <h2>User Info</h2>
-    
+    @for(user <- userOpt; store <- storeOpt) {
     <dl>
       <dt>Email</dt>
       <dd>@user.email</dd>
-      
+
+      <dt>First Name</dt>
+      <dd>@user.firstName.getOrElse("N/A")</dd>
+      <button><a href='@routes.Dashboard.updateInfo()'>Update Info</a></button>
+      }
     </dl>
     
   </section>

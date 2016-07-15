@@ -1,9 +1,11 @@
-@()(implicit r: AuthRequest[_], m: Messages)
+@import play.api.libs.ws.WSResponse
+
+@(/*response: WSResponse*/)(implicit r: AuthRequest[_], m: Messages)
 
 @layouts.dashboard("Dashboard", "dashboard", Seq("main")){
 
   <section>
-
-    <h1>My Dashboard</h1>
+    <h1>Dashboard</h1>
+      
   </section>
 }

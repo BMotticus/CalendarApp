@@ -13,16 +13,18 @@ GET             /signIn                                                      @co
 POST            /signIn                                                      @controllers.Application.doSignIn
 GET             /signOut                                                     @controllers.Application.signOut
 
-GET             /dashboard/:userId                                           @controllers.Dashboard.index(userId: Long)
-GET             /dashboard/:userId/userInfo                                  @controllers.Dashboard.userInfo(userId: Long)
-GET             /dashboard/:userId/calendars                                 @controllers.Dashboard.calendars(userId: Long)
-GET             /dashboard/:userId/calendar                                  @controllers.Dashboard.calendar(userId: Long)
-GET             /dashboard/:userId/schedules                                 @controllers.Dashboard.schedules(userId: Long)
-GET             /dashboard/:userId/messageBoard                              @controllers.Dashboard.messageBoard(userId:Long)     
-GET             /dashboard/:userId/contacts                                  @controllers.Dashboard.contacts(userId:Long)
+GET             /dashboard/                                                  @controllers.Dashboard.index()
+GET             /dashboard/userInfo                                          @controllers.Dashboard.userInfo()
+GET             /dashboard/calendars                                         @controllers.Dashboard.calendars()
+GET             /dashboard/calendar                                          @controllers.Dashboard.calendar()
+GET             /dashboard/schedules                                         @controllers.Dashboard.schedules()
+GET             /dashboard/messageBoard                                      @controllers.Dashboard.messageBoard()     
+GET             /dashboard/contacts                                          @controllers.Dashboard.contacts()
+GET             /dashboard/updateInfo                                        @controllers.Dashboard.updateInfo()
 
-GET             /dashboard/:userId/clientSignIn                              @controllers.Dashboard.clientSignIn(userId: Long, redirectUrl: String ?= "")
+GET             /dashboard/clientSignIn                                      @controllers.OAuth.clientSignIn(redirectUrl: String ?= "")
 POST            /clientRedirect                                              @controllers.OAuth.clientRedirect
+GET             /clientResources                                             @controllers.OAuth.clientResources(redirectUrl: String ?= "", scope: String = "")
 
 # Map static resources from the /public folder to the /assets URL path
 GET             /assets/*file                                                @controllers.Assets.versioned(path="/public", file: Asset)

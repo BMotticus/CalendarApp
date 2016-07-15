@@ -1,9 +1,11 @@
-@()(implicit r: Request[_], m: Messages)
+@import play.api.libs.ws.WSResponse
+@(clientId: WSResponse)(implicit r: Request[_], m: Messages)
 
 @layouts.front("Thank you", "home", Seq("main")){
 
   <section>
     
-    <h1>Thank You</h1>
+    <h1>Client Redirect</h1>
+    @clientId
   </section>
 }

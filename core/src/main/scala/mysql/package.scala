@@ -1,8 +1,10 @@
 package mysql
 
 import com.gravitydev.scoop._, query._
+
 import java.time._
 import scala.language.postfixOps
+import models._
 
 object `package` {
 
@@ -19,5 +21,19 @@ object `package` {
     d => ZoneId.of(d),
     d => d.toString
   )
+  
+  implicit object accountIdF extends SqlCustomType [AccountId, Long](
+    new AccountId(_),
+    _.underlying
+  )
 
+  implicit object storeIdF extends SqlCustomType [StoreId, Long](
+    new StoreId(_),
+    _.underlying
+  )
+
+  implicit object userIdF extends SqlCustomType [UserId, Long](
+    new UserId(_),
+    _.underlying
+  )
 }

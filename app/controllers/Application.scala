@@ -70,7 +70,7 @@ class Application  @Inject() (val messagesApi: MessagesApi) extends Controller w
       { case (cn,e,p1,p2,tz) =>
         val timezone = ZoneId.of(ZoneOffset.ofHours(tz.toInt).getId)
         val userSession = bm.accountsM.createAccount(SignUpData.apply(cn,e,p1,timezone))
-        Redirect(routes.Dashboard.userInfo(userSession.user.id)).withSession(userSession.data.toList: _*)
+        Redirect(routes.Dashboard.userInfo()).withSession(userSession.data.toList: _*)
       }
     )
   }
@@ -100,17 +100,17 @@ class Application  @Inject() (val messagesApi: MessagesApi) extends Controller w
   
   def thankYou(confirm: Long, message: String, title: String, tab: String) = Action {implicit r =>
     Ok{
-      views.html.front.thankYou(confirm = confirm, message = message, title = title, tab = tab)
+      views.html.front.thankYou(confirm=confirm, message=message, title=title, tab=tab)
     }
   }
 
   def news = Action { implicit r =>
     Ok(views.html.front.news())
   }
-
+  
   def signIn (path: String) = Action { implicit r =>
     Ok{
-      views.html.front.signIn(path, signInForm.fill(SignInData("","")))
+      views.html.front.signIn( path, signInForm.fill(SignInData("","")), bm.googleAuth.clientId )
     }
   }
   
@@ -122,7 +122,7 @@ class Application  @Inject() (val messagesApi: MessagesApi) extends Controller w
         val userSession = bm.usersM.signInWithCredentials(s.email, s.password).get
         //TODO optimization: reduce redirects
         Redirect(
-          routes.Dashboard.clientSignIn(userSession.user.id, path)
+          routes.OAuth.clientSignIn(path)
         ).withSession(userSession.data.toList: _*)
       }
     )
