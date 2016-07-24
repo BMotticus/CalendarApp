@@ -1,4 +1,4 @@
-package plugins
+package context
 
 import com.typesafe.scalalogging.StrictLogging
 import play.api.libs.concurrent.{Akka, Execution}
@@ -41,10 +41,12 @@ class BMotticus  @Inject() (implicit val app: Application) extends BMPlugin with
   
 }
 
+//Context
+
 import play.api.Play.current
 
 trait BMotticusContext {
-  def bm: plugins.BMotticus = current.plugin[BMotticus].getOrElse(throw new RuntimeException("Plugin Failed to load"))
+  def bm: context.BMotticus = current.plugin[BMotticus].getOrElse(throw new RuntimeException("Plugin Failed to load"))
 }
 
 object BMotticusContext extends BMotticusContext

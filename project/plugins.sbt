@@ -29,7 +29,6 @@ addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "4.0.0")
 
 libraryDependencies ++= Seq(
   "mysql" % "mysql-connector-java" % "5.1.34",
-  "joda-time" % "joda-time" % "2.7",
-  "org.scalaz.stream" %% "scalaz-stream" % "0.8"
+  "joda-time" % "joda-time" % "2.7"
 )
 

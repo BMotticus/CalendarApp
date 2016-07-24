@@ -8,10 +8,16 @@ import models._
 
 object `package` {
 
-  implicit object dateTimeF  extends SqlCustomType [Instant, java.sql.Timestamp] (
+  implicit object instantF extends SqlCustomType [Instant, java.sql.Timestamp] (
     d => d.toInstant, 
     d => new java.sql.Timestamp(d.toEpochMilli)
   )
+
+  implicit object localDateTime extends SqlCustomType [LocalDateTime, java.sql.Timestamp] (
+    d => d.toLocalDateTime,
+    d => java.sql.Timestamp.valueOf(d)
+  )
+
   implicit object localDateF extends SqlCustomType [LocalDate, java.sql.Date] (
     d => d.toLocalDate, 
     d => java.sql.Date.valueOf(d)
