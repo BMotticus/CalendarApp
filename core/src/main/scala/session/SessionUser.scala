@@ -4,7 +4,7 @@ import models._
 import scala.language.postfixOps
 import java.time.ZoneId
 import play.api.libs.json._
-
+import utils.JsonFormats._
 trait SessionUser {
   val signedIn: Boolean
 }
@@ -45,8 +45,11 @@ case class SignedInUser (
   )
   
   val json = Json.obj(
-    "user" -> Json.obj(),
-    "store" -> Json.obj(),
-    "account" -> Json.obj()
+    "userId" -> Json.toJson(user.id),
+    "email" -> user.email,
+    "storeId" -> Json.toJson(store.id),
+    "timezone" -> Json.toJson(store.timezone),
+    "accountId" -> Json.toJson(account.id),
+    "accountName" -> Json.toJson(account.name)
   )
 }

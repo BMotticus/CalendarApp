@@ -20,7 +20,7 @@ import play.api.data.format.Formats._
 import play.api.libs.concurrent.Execution.Implicits._
 import java.time.{ZoneId, ZoneOffset}
 
-class Application  @Inject() (val messagesApi: MessagesApi) extends Controller with BaseController with I18nSupport  {
+class Application  @Inject() (val messagesApi: MessagesApi) extends Controller with BaseController with ReactJsEngine with I18nSupport  {
   
   val contactForm = Form(
     mapping(
@@ -53,7 +53,19 @@ class Application  @Inject() (val messagesApi: MessagesApi) extends Controller w
   )
 
   def index = Action { implicit r =>
-    Ok(views.html.front.index("Your new application is ready."))
+    
+    Ok(
+      views.html.front.index("Your new application is ready.")
+    )
+  }
+
+  def reactIndex = Action { implicit r =>
+
+    Ok(
+      render("Home", "Home Page")(
+        "msg" -> "React Render from the Server"
+      )
+    )
   }
   
   def signUp = Action { implicit r =>
