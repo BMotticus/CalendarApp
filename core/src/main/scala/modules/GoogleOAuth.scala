@@ -8,6 +8,7 @@ import scala.concurrent.Future
 import play.api.mvc.{RequestHeader, Call}
 import play.api.libs.oauth.ServiceInfo
 
+// Won't work until I provide HTTPS Certificate. 
 trait GoogleOAuth {
   /**
     * STEP 1: Request authorization_code from google 

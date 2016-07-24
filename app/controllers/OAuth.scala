@@ -12,9 +12,9 @@ import scala.concurrent.Future
 object OAuth {
   val tokenKey = "oauth-token"
 }
-
+/*TODO: Need to Use HTTPS */
 class OAuth @Inject() (val messagesApi: MessagesApi) extends Controller with BaseController with I18nSupport {
-  //TODO: Question - Do I need this and controllers.Application.signIn()?
+  
   def clientSignIn (redirectUrl: String) = AuthAction.async { implicit r =>
     //look for the access token in the user's session
     r.session.get(OAuth.tokenKey) match {

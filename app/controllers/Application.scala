@@ -19,7 +19,7 @@ import play.api.data.Form
 import play.api.data.format.Formats._
 import play.api.libs.concurrent.Execution.Implicits._
 import java.time.{ZoneId, ZoneOffset}
-
+  // TODO: Move Everything to React.js, Start with Layout
 class Application  @Inject() (val messagesApi: MessagesApi) extends Controller with BaseController with ReactJsEngine with I18nSupport  {
   
   val contactForm = Form(
