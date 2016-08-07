@@ -10,7 +10,7 @@ import com.gravitydev.scoop.sbt.ScoopPlugin.autoImport._
 lazy val commonSettings = Seq(
   scalaVersion := "2.11.7",
   offline := true,
-  organization in ThisBuild := "io.CalendarApp",
+  organization in ThisBuild := "bmotticus",
   resolvers ++= Seq(
     "typesafe" at "http://repo.typesafe.com/typesafe/releases/",
     Resolver.url("typesafe2", url("http://dl.bintray.com/typesafe/ivy-releases"))(Resolver.ivyStylePatterns),
