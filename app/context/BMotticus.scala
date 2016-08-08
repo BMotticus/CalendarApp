@@ -25,7 +25,7 @@ class BMotticus  @Inject() (implicit val app: Application) extends BMPlugin with
     WS.client(app),
     oAuthConfigs,
     config.getString("google.api_key").get  
-  )
+  )(ctx.ec)
   
   println(config.getObject("google.client_id.json"))
   

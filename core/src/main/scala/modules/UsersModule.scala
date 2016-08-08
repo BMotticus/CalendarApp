@@ -9,7 +9,7 @@ import java.sql.Connection
 import models._
 
 
-class UsersModule(protected val ctx: Context) extends ContextOps{
+class UsersModule(protected val ctx: Context) {
   
   def createUser(accountId: AccountId, storeId: StoreId, email: String, password: String, role: String): Long = {
     DB.withConnection{ implicit conn =>

@@ -8,7 +8,7 @@ import scala.concurrent.Future
 import play.api.mvc.{RequestHeader, Call}
 import play.api.libs.oauth.ServiceInfo
 
-// Won't work until I provide HTTPS Certificate. 
+//TODO: Set up HTTPS Certificate
 trait GoogleOAuth {
   /**
     * STEP 1: Request authorization_code from google 
@@ -126,8 +126,8 @@ class OAuthConfiguration(clientConf: ConfigObject){
 
   val calendarUrl = "https://www.googleapis.com/auth/calendar"
   val calendarReadOnlyUrl = "https://www.googleapis.com/auth/calendar.readonly"
-
-  //TODO: check HTTPS callback url
+  
+  
   val redirectUri = "redirect_uri" -> "https://localhost:9000/clientRedirect"
 
   val approvalForce = "approval_prompt" -> "force"

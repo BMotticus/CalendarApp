@@ -12,7 +12,7 @@ import java.sql.Connection
 import models._
 import session.SignedInUser
 
-class AccountsModule (protected val ctx: Context) extends ContextOps{
+class AccountsModule (protected val ctx: Context) {
   
   def createAccount(signUpData: SignUpData):SignedInUser = {
     val address = Address("", "", "", "", "")

@@ -11,7 +11,7 @@ import models._
 
 import models._
 
-class StoreModule (protected val ctx: Context) extends ContextOps{
+class StoreModule (protected val ctx: Context) {
 
   def createStore(accountId: AccountId, timezone: ZoneId):StoreId = {
     DB.withConnection{ implicit conn =>

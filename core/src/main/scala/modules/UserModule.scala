@@ -7,10 +7,9 @@ import java.time.{Instant, ZoneId}
 import play.api.Play.current
 import play.api.db.DB
 import models._
-/**
-  * Created by brandonmott1 on 4/23/16.
-  */
-class UserModule (protected val ctx: Context) extends ContextOps{
+
+
+class UserModule (protected val ctx: Context) {
   
   def byId(userId: UserId) = DB.withConnection{ implicit conn => 
     using(tables.`users`){u =>
