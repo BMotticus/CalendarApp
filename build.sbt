@@ -87,6 +87,7 @@ lazy val root = Project("site",  file("."))
       "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0",
       //"com.typesafe.akka"          %% "akka-actor" % "2.3.2",
       "org.scalatestplus"          %% "play" % "1.4.0" % "test",
+      "org.seleniumhq.selenium" % "selenium-java" % "2.53.1" % "test", // override selenium version, otherwise won't work with chrome 52
       "org.webjars"                %% "webjars-play" % "2.4.0-1",
       "org.webjars"                 % "react" % "0.13.3",
       "org.webjars"                 % "bootstrap" % "3.3.5"
